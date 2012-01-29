@@ -8,7 +8,6 @@ Bundler.require
 module Oldtime
   autoload :VERSION, "oldtime/version"
   autoload :UI, "oldtime/ui"
-  autoload :Core, "oldtime/core"
 
   Error = Class.new Exception
   FatalError = Class.new Exception
@@ -26,8 +25,6 @@ Rc = Optimism.require "oldtime/rc"
 
 module Kernel
 private
-
-  include Oldtime::Core
 
   def configure(data, &blk)
     Rc << Optimism(data, &blk)
