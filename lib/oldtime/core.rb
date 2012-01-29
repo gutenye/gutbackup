@@ -1,4 +1,4 @@
-module OldTime
+module Oldtime
   module Core
     def rsync
       puts "rsync"

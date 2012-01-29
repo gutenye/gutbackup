@@ -1,3 +1,3 @@
-module ABT
+module Oldtime
   VERSION="0.1.0"
 end

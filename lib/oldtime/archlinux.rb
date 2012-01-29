@@ -1,4 +1,4 @@
-module OldTime
+module Oldtime
   module ArchLinux
 
     def backup_packages

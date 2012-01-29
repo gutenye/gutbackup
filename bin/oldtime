@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+require_relative "../lib/oldtime/cli"
+
+begin
+  Oldtime::CLI.start
+rescue Oldtime::Error => e
+  Oldtime.ui.error e.message
+  Oldtime.ui.debug e.backtrace.join("\n")
+  exit 1
+rescue Interrupt => e
+  Oldtime.ui.error "\nQuitting..."
+  Oldtime.ui.debug e.backtrace.join("\n")
+  exit 1
+end
