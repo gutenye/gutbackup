@@ -22,7 +22,7 @@ module Oldtime
   end
 end
 
-Rc = Optimism.require "oldtime/rc"
+Rc = Optimism.require("oldtime/rc")
 
 module Kernel
 private
@@ -37,6 +37,18 @@ private
 
   def restore(instance=:default, &blk)
     Rc.restore_blks[instance] = blk
+  end
+
+  def check_mountpoint(path)
+    unless Pa.mountpoint?(path)
+      raise Error, "`#{path}' is unmounted."
+    end
+  end
+
+  def check_root
+    unless Process.uid == 0
+      raise Error, "need root privilege to run this script."
+    end
   end
 end
 

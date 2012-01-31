@@ -1,12 +1,15 @@
+# user config
 p:
-  home = Pa("~/.oldtime")
+  home = nil
   oldtime = Pa("/oldtime")
-
-backup_blks = {}
-restore_blks = {}
 
 backup:
   rsync.options = ""
+
+# system config
+
+backup_blks = {}
+restore_blks = {}
 
 restore:
   rsync.options = ""
