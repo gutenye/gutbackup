@@ -1,17 +1,17 @@
-Foo, a very good library
-========================
+Oldtime, a highly customize configurable backup & restore system. 
+=================================================================
 
-| Homepage:      |  https://github.com/<%=github.username%>/<%=project%>       |
+| Homepage:      |  https://github.com/GutenYe/oldtime       |
 |----------------|------------------------------------------------------       |
-| Author:	       | <%=author%>                                                 |
-| License:       | <%=license%>                                                |
-| Documentation: | http://rubydoc.info/gems/<%=project%>/frames                |
-| Issue Tracker: | https://github.com/<%=github.username%>/<%=project%>/issues |
+| Author:	       | Guten                                                 |
+| License:       | MIT-LICENSE                                                |
+| Documentation: | http://rubydoc.info/gems/oldtime/frames                |
+| Issue Tracker: | https://github.com/GutenYe/oldtime/issues |
 
 Overview
 --------
 
-	descripe your prjoect here.
+	WARNING: THIS PROJECT IS UNDER HEAV DEVELOPMENT, NOT READY FOR PRODUCTION.
 
 Features
 --------
@@ -26,7 +26,7 @@ Usage
 Install
 ----------
 
-  gem install <%=project%>
+  gem install oldtime
 
 Contributing
 -------------
@@ -38,7 +38,7 @@ Contributing
 Credits
 --------
 
-* [Contributors](https://github.com/<%=github.username%>/<%=project%>/contributors)
+* [Contributors](https://github.com/GutenYe/oldtime/contributors)
 
 Resources
 ---------
@@ -50,7 +50,7 @@ Copyright
 
 (the MIT License)
 
-Copyright (c) 2011 <%=author%>
+Copyright (c) 2011 Guten
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

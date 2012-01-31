@@ -1,17 +1,17 @@
 $: << "."
-require "lib/<%=project%>/version"
+require "lib/oldtime/version"
 
 Gem::Specification.new do |s|
-	s.name = "<%=project%>"
-	s.version = <%=project.capitalize%>::VERSION
-	s.summary = "a good lib"
+	s.name = "oldtime"
+	s.version = Oldtime::VERSION
+	s.summary = "the backup & restore system"
 	s.description = <<-EOF
-a good lib
+the backup & restore sytem
 	EOF
 
-	s.author = "<%=author%>"
-	s.email = "<%=email%>"
-	s.homepage = "http://github.com/<%=github.username%>/<%=project%>"
+	s.author = "Guten"
+	s.email = "ywzhaifei@gmail.com"
+	s.homepage = "http://github.com/GutenYe/oldtime"
 	s.rubyforge_project = "xx"
 
 	s.files = `git ls-files`.split("\n")
