@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require_relative "../lib/oldtime/cli"
+require_relative "../lib/oldtime"
 
 begin
   Oldtime::CLI.start

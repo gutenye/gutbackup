@@ -1,6 +1,5 @@
 require "spec_helper"
 
-
 describe Kernel do
   it "#configure" do
     configure <<-EOF

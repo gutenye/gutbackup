@@ -8,6 +8,7 @@ Bundler.require
 module Oldtime
   autoload :VERSION, "oldtime/version"
   autoload :UI, "oldtime/ui"
+  autoload :CLI, "oldtime/cli"
 
   Error = Class.new Exception
   FatalError = Class.new Exception
@@ -38,3 +39,5 @@ private
     Rc.restore_blks[instance] = blk
   end
 end
+
+Optimism.undef_method :backup, :restore, :configure

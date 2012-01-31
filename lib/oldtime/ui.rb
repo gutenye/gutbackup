@@ -15,6 +15,11 @@ module Oldtime
     def confirm(message)
     end
 
+    # alias to info.
+    def say(*args, &blk)
+      info(*args, &blk)
+    end
+
     class Shell < UI
       attr_writer :shell
 

@@ -1,0 +1,4 @@
+<%=Rc.foo%> /tmp /bar
+
+[foo]
+guten

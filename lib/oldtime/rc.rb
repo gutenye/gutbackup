@@ -1,3 +1,7 @@
+p:
+  home = Pa("~/.oldtime")
+  oldtime = Pa("/oldtime")
+
 backup_blks = {}
 restore_blks = {}
 
