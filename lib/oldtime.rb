@@ -41,13 +41,13 @@ private
 
   def check_mountpoint(path)
     unless Pa.mountpoint?(path)
-      raise Error, "`#{path}' is unmounted."
+      raise Oldtime::Error, "`#{path}' is unmounted."
     end
   end
 
   def check_root
     unless Process.uid == 0
-      raise Error, "need root privilege to run this script."
+      raise Oldtime::Error, "need root privilege to run this script."
     end
   end
 end
