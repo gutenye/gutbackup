@@ -8,20 +8,15 @@ Oldtime, a highly customize configurable backup & restore system.
 | Documentation: | http://rubydoc.info/gems/oldtime/frames                |
 | Issue Tracker: | https://github.com/GutenYe/oldtime/issues |
 
-Overview
---------
+oldtime, The old time.
 
-	WARNING: THIS PROJECT IS UNDER HEAV DEVELOPMENT, NOT READY FOR PRODUCTION.
+### Is It Good?
 
-Features
---------
+Yes.
 
-	a clearly list of features.
+### Is It "Production Ready™"?
 
-Usage
------
-
-	how to use
+No.
 
 Install
 ----------
@@ -39,11 +34,6 @@ Credits
 --------
 
 * [Contributors](https://github.com/GutenYe/oldtime/contributors)
-
-Resources
----------
-
-	some related resources to help each other.
 
 Copyright
 ---------
