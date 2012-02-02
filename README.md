@@ -21,41 +21,41 @@ create hello example from https://github.com/GutenYe/oldtime-hello-example
 
 it will have these files:
 
-	# /oldtime/oldtimerc  # an Optimsim config file.
-		media = "/tmp"  # get this variable by Rc.media. 
-
 	/oldtime/oldtime/
-		hello.conf
-		hello/
-			backup.hello
+	  hello.conf
+	  hello/
+	    backup.hello
+
+	# /oldtime/oldtimerc  # an Optimsim config file.
+	  media = "/tmp"  # get this variable by Rc.media. 
 
 	# /oldtime/oldtime/hello/backup.hello
 
-		/oldtime/  <%=Rc.media%>/hello.oldtime/ # an ERB template.
+	  /oldtime/  <%=Rc.media%>/hello.oldtime/ # an ERB template.
 
-		[exclude]
-		/.git
-    /oldtimerc
+	  [exclude]
+	  /.git
+	  /oldtimerc
 
 	# /oldtime/hello.conf
 
-		require "oldtime/rsync"
-		
-		configure <<EOF
-			backup:
-				rsync.options = "-av --delete" # get this variable by Rc.backup.rsync.options
-			
-			restore:
-				rsync.options = "-av"
-		EOF
+	  require "oldtime/rsync"
+	  
+	  configure <<EOF
+	    backup:
+	      rsync.options = "-av --delete" # get this variable by Rc.backup.rsync.options
+	    
+	    restore:
+	      rsync.options = "-av"
+	  EOF
 
-		backup do
-			rsync2 "backup.hello"  # load /oldtime/hello/backup.hello file
-		end
+	  backup do
+	    rsync2 "backup.hello"  # run rsync command read from /oldtime/hello/backup.hello file
+	  end
 
-		restore do
-			rsync "<%=Rc.media%>/hello.oldtime/ /oldtime/.oldtime/"
-		end
+	  restore do
+	    rsync "<%=Rc.media%>/hello.oldtime/ /oldtime/" # run rsync command
+	  end
 
 Let's begin.
 
