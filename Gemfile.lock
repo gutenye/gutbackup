@@ -1,20 +1,3 @@
-PATH
-  remote: /home/guten/dev/one/optimism
-  specs:
-    optimism (3.1.0)
-      hike (~> 1.2.0)
-
-PATH
-  remote: /home/guten/dev/one/pa
-  specs:
-    pa (1.1.4)
-
-PATH
-  remote: /home/guten/dev/one/tagen
-  specs:
-    tagen (1.1.2)
-      activesupport (~> 3.1.0)
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -23,6 +6,14 @@ GEM
     diff-lcs (1.1.3)
     hike (1.2.1)
     multi_json (1.0.4)
+    optimism (3.1.0)
+      hike (~> 1.2.0)
+    pa (1.2.1)
+    rag (1.2.0)
+      optimism (~> 3.1.0)
+      pa (~> 1.2.0)
+      tagen (~> 1.1.0)
+      thor (~> 0.14.0)
     rspec (2.8.0)
       rspec-core (~> 2.8.0)
       rspec-expectations (~> 2.8.0)
@@ -31,6 +22,8 @@ GEM
     rspec-expectations (2.8.0)
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.8.0)
+    tagen (1.1.4)
+      activesupport (~> 3.1.0)
     thor (0.14.6)
     watchr (0.7)
 
@@ -38,9 +31,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  optimism!
-  pa!
+  optimism (~> 3.1.0)
+  pa (~> 1.2.0)
+  rag
   rspec
-  tagen!
+  tagen (~> 1.1.4)
   thor
   watchr
