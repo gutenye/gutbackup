@@ -7,19 +7,19 @@ module Oldtime
     # default_task :install
     class_option "no-color", :type => :boolean, :banner => "Disable colorization in output"
     class_option "verbose",  :aliases => "-V", :type => :boolean, :banner => "Enable verbose output mode"
-    class_option "config",  :aliases => "-c", :type => :string, :banner => "Config file"
-    class_option "user-mode", :aliases => "-u", :type => :boolean, :banner => "Enter into User mode"
+    class_option "dir", :aliases => "-d", :type => :string, :banner => "config directory"
 
     def initialize(*)
       super
-      the_shell = (options["no-color"] ? Thor::Shell::Basic.new : shell)
+      o = options.dup
+      the_shell = (o["no-color"] ? Thor::Shell::Basic.new : shell)
       Oldtime.ui = UI::Shell.new(the_shell)
-      Oldtime.ui.debug! if options["verbose"]
+      Oldtime.ui.debug! if o["verbose"]
 
-      config = options["config"] || (options["user-mode"] ? "#{ENV['HOME']}/.oldtimerc" : "/oldtime/oldtimerc")
-      Rc << Optimism.require(Pa.absolute2(config))
+      home = Rc.p.home = o["dir"] || Rc.p.home
+      homerc = Rc.p.homerc = Pa("#{home}rc")
 
-      Rc.p.home ||= config.sub(/rc$/, "")
+      Rc << Optimism.require(homerc.absolute2)
     end
 
     desc "backup <profile> [instance]", "begin backup process."

@@ -1,7 +1,7 @@
 PATH
   remote: /home/guten/dev/one/optimism
   specs:
-    optimism (3.0.4)
+    optimism (3.1.0)
       hike (~> 1.2.0)
 
 PATH
