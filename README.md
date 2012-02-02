@@ -8,30 +8,21 @@ Oldtime, a highly customizable and configurable backup & restore system
 | Documentation: | http://rubydoc.info/gems/oldtime/frames   |
 | Issue Tracker: | https://github.com/GutenYe/oldtime/issues |
 
-oldtime, The old time.
-
-### Is It Good?
-
-Yes.
-
-### Is It "Production Ready™"?
-
-No.
 
 Getting Started
 --------------
 
 For example, we want to backup /oldtime to /tmp/hello.oldtime using rsync.
 
-create hello example
+create hello example from https://github.com/GutenYe/oldtime-hello-example
 
 	$ git clone git://github.com/GutenYe/oldtime-hello-example.git  /tmp/oldtime
 	$ sudo ln -s /tmp/oldtime /oldtime
 
 it will have these files:
 
-	# /oldtime/oldtimerc
-		media = "/tmp"  # get this variable by Rc.media. Syntax see Optimsim
+	# /oldtime/oldtimerc  # an Optimsim config file.
+		media = "/tmp"  # get this variable by Rc.media. 
 
 	/oldtime/oldtime/
 		hello.conf
@@ -40,7 +31,7 @@ it will have these files:
 
 	# /oldtime/oldtime/hello/backup.hello
 
-		/oldtime/  <%=Rc.media%>/hello.oldtime/ # an ERB template. see ERB
+		/oldtime/  <%=Rc.media%>/hello.oldtime/ # an ERB template.
 
 		[exclude]
 		/.git
@@ -69,12 +60,16 @@ it will have these files:
 Let's begin.
 
 	$ oldtime backup hello
-	# it calls "rsync -av --delete --exclude-from /tmp/hello.xxx/exclude /oldtime/ /tmp/hello.oldtime/"
+	# it calls "rsync -av --delete --exclude-from /tmp/hello.xx/exclude /oldtime/ /tmp/hello.oldtime/"
 
 	$ oldtime restore hello
 	# it calls "rsync -av /tmp/hello.oldtime/ /oldtime/"
 
 for a real world example, see [oldtime-archlinux-solution](https://github.com/GutenYe/oldtime-archlinux-solution).
+
+see Optimism Syntax: https://github.com/GutenYe/optimism
+
+see ERB Syntax: http://ruby-doc.org/stdlib-1.9.3/libdoc/erb/rdoc/ERB.html
 
 Install
 -------
@@ -103,7 +98,6 @@ Resources
 
 * [Ruby](http://www.ruby-lang.org/en): A Programmer's Best Friend
 * [Archlinux](http://www.archlinux.org): A simple, lightweight distribution
-* [pacuaer](https://github.com/Spyhawk/pacaur): A fast workflow AUR wrapper using cower as backend
 
 Copyright
 ---------
