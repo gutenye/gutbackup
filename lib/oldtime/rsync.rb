@@ -38,7 +38,10 @@ module Oldtime
         }
         cmd = build_cmd(end_cmd, file_config)
 
+        start_time = Time.time
         system cmd, :verbose => true
+        escape_time = Time::Deta.new((Time.time-start_time).to_i).display
+        File.append(@logfile.p, "TOTAL ESCAPE TIME: #{escape_time}")
       ensure
         # cleanup
         Pa.rm_r @dir
