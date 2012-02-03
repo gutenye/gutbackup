@@ -5,6 +5,4 @@ $spec_data = File.expand_path("../data", __FILE__)
 
 Rc.p.home = Pa("#{$spec_data}/oldtime")
 Rc.p.homerc = Pa("#{$spec_data}/oldtimerc")
-
-
-
+Rc.p.logfile = Pa("#{$spec_data}/logfile")

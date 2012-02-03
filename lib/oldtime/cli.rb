@@ -20,6 +20,7 @@ module Oldtime
       homerc = Rc.p.homerc = Pa("#{home}rc")
 
       Rc << Optimism.require(homerc.absolute2)
+
     end
 
     desc "backup <profile> [instance]", "begin backup process."
@@ -28,25 +29,36 @@ module Oldtime
       Rc.action = "backup"
       Rc.profile = profile
       instance = Rc.instance = instance.to_sym
+      setup_logfile
 
       load_profile profile
 
       if blk=Rc.backup_blks[instance]
-        blk.call
+        log_time {
+          blk.call
+        }
       else
         Oldtime.ui.say "can't find `#{instance}' instance to execute."
       end
     end
 
+
     desc "restore <profile> [instance]", "begin restore process."
     def restore(profile, instance=:default)
       Rc.action = "restore"
       Rc.profile = profile
-      Rc.instance = instance.to_sym
+      instance = Rc.instance = instance.to_sym
+      setup_logfile
 
       load_profile profile
 
-      Rc.restore_blks[instance].call
+      if blk=Rc.restore_blks[instance]
+        log_time {
+          blk.call
+        }
+      else
+        Oldtime.ui.say "can't find `#{instance}' instance to execute."
+      end
     end
 
 private
@@ -59,6 +71,22 @@ private
       else
         raise Error, "can't find the profile configuration file -- #{file}"
       end
+    end
+
+    def setup_logfile
+      # logfile
+      logdir = Pa("#{Rc.p.home}/#{Rc.profile}.log")
+      Pa.mkdir_f logdir
+      Rc.p.logfile = Pa("#{logdir}/#{Rc.action}.#{Time.now.strftime('%Y%m%d%H%M')}")
+    end
+
+    def log_time(&blk)
+      start_time = Time.time
+
+      blk.call
+
+      escape_time = Time::Deta.new((Time.time-start_time).to_i).display
+      File.append(Rc.p.logfile.p, "\n\nTOTAL ESCAPE TIME: #{escape_time}")
     end
   end
 end

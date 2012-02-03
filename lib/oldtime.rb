@@ -53,3 +53,4 @@ private
 end
 
 Optimism.undef_method :backup, :restore, :configure
+

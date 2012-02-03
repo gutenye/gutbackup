@@ -2,30 +2,32 @@ require "erb"
 
 module Oldtime
   class Rsync
-    def initialize(end_cmd)
+    attr_reader :name
+
+    def initialize(end_cmd, name)
       @end_cmd = ERB.new(end_cmd).result(binding)
-      @logdir = Pa("#{Rc.p.home}/#{Rc.profile}.log")
-      @logfile = Pa("#{@logdir}/#{Time.now.strftime('%Y%m%d-%H%M')}.#{Rc.action}.#{Rc.instance}")
-      Pa.mkdir_f @logdir
+      @name = name
     end
 
     def run
       cmd = build_cmd(@end_cmd)
+
+      File.append(Rc.p.logfile.p, "\n#{'='*30}\n#{'='*10} rsync #{name} #{'='*10}\n#{'='*30}\n\n")
       system cmd, :verbose => true
     end
 
   private
     def build_cmd(end_cmd)
-      "rsync #{Rc[Rc.action].rsync.options} #{end_cmd} &> #{@logfile} | cat"
+      "rsync #{Rc[Rc.action].rsync.options} --log-file #{Rc.p.logfile} #{end_cmd}"
     end
   end
 
   class Rsync2
-    def initialize(file)
+    attr_reader :name
+
+    def initialize(file, name)
       @file = file
-      @logdir = Pa("#{Rc.p.home}/#{Rc.profile}.log")
-      @logfile = Pa("#{@logdir}/#{Time.now.strftime('%Y%m%d-%H%M')}.#{Rc.action}.#{Rc.instance}")
-      Pa.mkdir_f @logdir
+      @name = name
     end
 
     def run
@@ -38,10 +40,8 @@ module Oldtime
         }
         cmd = build_cmd(end_cmd, file_config)
 
-        start_time = Time.time
+        File.append(Rc.p.logfile.p, "\n#{'='*30}\n#{'='*10} rsync #{name} #{'='*10}\n#{'='*30}\n\n")
         system cmd, :verbose => true
-        escape_time = Time::Deta.new((Time.time-start_time).to_i).display
-        File.append(@logfile.p, "TOTAL ESCAPE TIME: #{escape_time}")
       ensure
         # cleanup
         Pa.rm_r @dir
@@ -70,7 +70,7 @@ module Oldtime
         cmd << "--#{k}-from #{@dir}/#{k} "
       }
 
-      cmd << "#{end_cmd} &> #{@logfile} | cat"
+      cmd << "--log-file #{Rc.p.logfile} #{end_cmd}"
     end
 
     # Given data:
@@ -99,14 +99,16 @@ module Oldtime
   end
 
   module Rsync_Kernel
-    def rsync(end_cmd)
-      Rsync.new(end_cmd).run
+    def rsync(end_cmd, name=nil)
+      name ||= end_cmd
+      Rsync.new(end_cmd, name).run
     end
 
     # read rsync cmd from file.
-    def rsync2(filename)
+    def rsync2(filename, name=nil)
       file = Pa("#{Rc.p.home}/#{Rc.profile}/#{filename}")
-      Rsync2.new(file).run
+      name ||= filename
+      Rsync2.new(file, name).run
     end
   end
 end
