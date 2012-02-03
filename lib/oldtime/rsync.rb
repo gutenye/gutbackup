@@ -4,6 +4,9 @@ module Oldtime
   class Rsync
     def initialize(end_cmd)
       @end_cmd = ERB.new(end_cmd).result(binding)
+      @logdir = Pa("#{Rc.p.home}/#{Rc.profile}.log")
+      @logfile = Pa("#{@logdir}/#{Time.now.strftime('%Y%m%d-%H%M')}.#{Rc.action}.#{Rc.instance}")
+      Pa.mkdir_f @logdir
     end
 
     def run
@@ -13,13 +16,16 @@ module Oldtime
 
   private
     def build_cmd(end_cmd)
-      "rsync #{Rc[Rc.action].rsync.options} #{end_cmd}"
+      "rsync #{Rc[Rc.action].rsync.options} #{end_cmd} &> #{@logfile} | cat"
     end
   end
 
   class Rsync2
     def initialize(file)
       @file = file
+      @logdir = Pa("#{Rc.p.home}/#{Rc.profile}.log")
+      @logfile = Pa("#{@logdir}/#{Time.now.strftime('%Y%m%d-%H%M')}.#{Rc.action}.#{Rc.instance}")
+      Pa.mkdir_f @logdir
     end
 
     def run
@@ -56,11 +62,12 @@ module Oldtime
     def build_cmd(end_cmd, file_config)
       cmd = "rsync #{Rc[Rc.action].rsync.options} "
 
+
       file_config.each { |k,v|
         cmd << "--#{k}-from #{@dir}/#{k} "
       }
 
-      cmd << end_cmd
+      cmd << "#{end_cmd} &> #{@logfile} | cat"
     end
 
     # Given data:
