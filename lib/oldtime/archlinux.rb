@@ -1,8 +1,8 @@
 module Oldtime
   module ArchLinux_Kernel
     def backup_archlinux_packages
-      sh %~pacman -Qqe | grep -vx "$(pacman -Qqm)" > #{Rc.p.oldtime}/packages.lst~, :verbose => true
-      sh %~pacman -Qqm > #{Rc.p.oldtime}/aur.lst~, :verbose => true
+      system %~pacman -Qqe | grep -vx "$(pacman -Qqm)" > #{Rc.p.oldtime}/packages.lst~, :verbose => true
+      system %~pacman -Qqm > #{Rc.p.oldtime}/aur.lst~, :verbose => true
     end
   end
 end
