@@ -14,9 +14,9 @@ Getting Started
 
 For example, we want to backup /oldtime to /tmp/hello.oldtime using rsync.
 
-create hello example from https://github.com/GutenYe/oldtime-hello-example
+create hello example from https://github.com/GutenYe/oldtime-helloworld
 
-	$ git clone git://github.com/GutenYe/oldtime-hello-example.git  /tmp/oldtime
+	$ git clone git://github.com/GutenYe/oldtime-helloworld.git  /tmp/oldtime
 	$ sudo ln -s /tmp/oldtime /oldtime
 
 it will have these files:
