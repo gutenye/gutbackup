@@ -8,6 +8,9 @@ module Oldtime
     class_option "no-color", :type => :boolean, :banner => "Disable colorization in output"
     class_option "verbose",  :aliases => "-V", :type => :boolean, :banner => "Enable verbose output mode"
     class_option "dir", :aliases => "-d", :type => :string, :banner => "config directory"
+    class_option "halt", :aliases => "-h", :type => :boolean, :default => false :banner => "halt system after process completed. "
+    class_option "after", :aliases => "-a", :type => :array, :banner => "after hook."
+    class_option "before", :aliases => "-b", :type => :string, :banner => "before hook."
 
     def initialize(*)
       super
@@ -26,42 +29,29 @@ module Oldtime
     desc "backup <profile> [instance]", "begin backup process."
     # method_option "x", :aliases => "-x", :default => "x", :type => :string, :banner => "NAME", :desc => "x"
     def backup(profile, instance=:default)
-      Rc.action = "backup"
-      Rc.profile = profile
-      instance = Rc.instance = instance.to_sym
-      setup_logfile
-
-      load_profile profile
-
-      if blk=Rc.backup_blks[instance]
-        log_time {
-          blk.call
-        }
-      else
-        Oldtime.ui.say "can't find `#{instance}' instance to execute."
-      end
+      run(:backup, profile, instance, options.dup)
     end
-
 
     desc "restore <profile> [instance]", "begin restore process."
     def restore(profile, instance=:default)
-      Rc.action = "restore"
-      Rc.profile = profile
-      instance = Rc.instance = instance.to_sym
-      setup_logfile
-
-      load_profile profile
-
-      if blk=Rc.restore_blks[instance]
-        log_time {
-          blk.call
-        }
-      else
-        Oldtime.ui.say "can't find `#{instance}' instance to execute."
-      end
+      run(:restore, profile, instance, options.dup)
     end
 
 private
+
+    def run(action, profile, instance, o)
+      Rc.action = action
+      Rc.profile = profile
+      instance = Rc.instance = instance.to_sym
+      setup_logfile
+      load_profile profile
+
+      o[:before].unshift "default"
+      o[:after].unshift "default"
+      o[:after] << "halt" if o.halt?
+
+      Instance.new(:restore, instance, o[:before].uniq, o[:after].uniq).run
+    end
 
     def load_profile(profile)
      file = Pa("#{Rc.p.home}/#{profile}.conf")
@@ -80,13 +70,5 @@ private
       Rc.p.logfile = Pa("#{logdir}/#{Rc.action}.#{Time.now.strftime('%Y%m%d%H%M')}")
     end
 
-    def log_time(&blk)
-      start_time = Time.time
-
-      blk.call
-
-      escape_time = Time::Deta.new((Time.time-start_time).to_i).display
-      File.append(Rc.p.logfile.p, "\n\nTOTAL ESCAPE TIME: #{escape_time}")
-    end
   end
 end

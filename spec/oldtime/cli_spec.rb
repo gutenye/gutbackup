@@ -3,7 +3,7 @@ require "spec_helper"
 CLI = Oldtime::CLI
 
 class CLI
-  public :load_profile, :setup_logfile, :log_time
+  public :load_profile, :setup_logfile
 end
 
 describe CLI do
@@ -20,15 +20,6 @@ describe CLI do
       CLI.new.setup_logfile
     end
   end
-
-  describe "#log_time" do
-    it "works" do
-      Rc.p.logfile = Pa("#{$spec_data}/logfile")
-
-      CLI.new.log_time {
-        1 + 1
-      }
-    end
-  end
 end
+
 

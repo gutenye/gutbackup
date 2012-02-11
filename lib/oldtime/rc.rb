@@ -12,5 +12,17 @@ p:
   home = Pa("/oldtime/oldtime")
   homerc = nil
 
-backup_blks = {}
-restore_blks = {}
+instances:
+  backup = Optimism.new
+  restore = Optimism.new
+
+hooks:
+	all.default: 
+		before = Optimism.new
+		after = Optimism.new
+	backup.default:
+		before = Optimism.new
+		after = Optimism.new
+  restore.default:
+		before = Optimism.new
+		after = Optimism.new
