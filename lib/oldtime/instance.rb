@@ -2,7 +2,7 @@ module Oldtime
   class Instance
     attr_reader :action, :instance
 
-    def  initialize(action, instance, before_hooks=[], after_hooks=[])
+    def initialize(action, instance, before_hooks=[], after_hooks=[])
       @action = action
       @instance = instance
       @before_hooks = before_hooks
@@ -10,11 +10,11 @@ module Oldtime
     end
 
     def run
-      run_before_hooks(@before_hooks)
+      run_hooks(:before, @before_hooks)
 
       run_instance
 
-      run_after_hook
+      run_hooks(:after, @after_hooks)
     end
 
     private
@@ -22,21 +22,32 @@ module Oldtime
     def run_instance
       if blk=Rc.instances.backup[instance]
         log_time {
-          Instance.new(action, instance).instance_eval &blk
+          blk.call
         }
       else
         Oldtime.ui.say "can't find `#{instance}' instance to execute."
       end
     end
 
-    def run_before_hooks(hooks)
-      hooks.map!{|v| v.to_sym}
-
-      hooks.rever
-
+    def run_hooks(pos, hooks)
+      hooks.each {|n|
+        hooks = find_hooks(@action, @instance, pos, n)
+        hooks.each {|v| v.call}
+      }
     end
 
-    def run_after_hook
+    def find_hooks(action, instance, pos, task)
+      ret = []
+
+      p=[ "#{action}.#{instance}.#{pos}.#{task}", "all.#{instance}.#{pos}.#{task}" ]
+          .find {|v| Rc.hooks._has_key2?(v) }
+      ret << Rc.hooks._fetch2(p) if p
+
+      p=[ "#{action}.default.#{pos}.#{task}", "all.default.#{pos}.#{task}" ]
+          .find {|v| Rc.hooks._has_key2?(v) }
+      ret << Rc.hooks._fetch2(p) if p
+
+      ret
     end
 
     def log_time(&blk)
@@ -46,26 +57,6 @@ module Oldtime
 
       escape_time = Time::Deta.new((Time.time-start_time).to_i).display
       File.append(Rc.p.logfile.p, "\n\nTOTAL ESCAPE TIME: #{escape_time}")
-    end
-  end
-end
-
-
-  class InstanceEval
-    # action :backup, :restore
-    def initialize(action, instance)
-      @action = action
-      @instance = instance
-
-      @hook = Rc.hooks[@action]._get2(@instance)
-    end
-
-    def after(task=:default, &blk)
-      @hook.after[task] = blk
-    end
-
-    def before(*args, &blk)
-      raise EFatal, "don't have a before hook inside an instance."
     end
   end
 end

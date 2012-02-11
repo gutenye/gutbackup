@@ -23,7 +23,6 @@ module Oldtime
       homerc = Rc.p.homerc = Pa("#{home}rc")
 
       Rc << Optimism.require(homerc.absolute2)
-
     end
 
     desc "backup <profile> [instance]", "begin backup process."
@@ -46,8 +45,6 @@ private
       setup_logfile
       load_profile profile
 
-      o[:before].unshift "default"
-      o[:after].unshift "default"
       o[:after] << "halt" if o.halt?
 
       Instance.new(:restore, instance, o[:before].uniq, o[:after].uniq).run
@@ -69,6 +66,5 @@ private
       Pa.mkdir_f logdir
       Rc.p.logfile = Pa("#{logdir}/#{Rc.action}.#{Time.now.strftime('%Y%m%d%H%M')}")
     end
-
   end
 end

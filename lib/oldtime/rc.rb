@@ -19,7 +19,8 @@ instances:
 hooks:
 	all.default: 
 		before = Optimism.new
-		after = Optimism.new
+		after:
+      halt = proc { system("halt", :verbose => true) }
 	backup.default:
 		before = Optimism.new
 		after = Optimism.new

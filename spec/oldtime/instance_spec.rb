@@ -2,35 +2,53 @@ require "spec_helper"
 Instance = Oldtime::Instance
 
 class Instance
-  class << self
-    public :log_time
-  end
+  public :log_time, :find_hooks
 end
 
 describe Instance do
-  describe ".log_time" do
+  describe "#log_time" do
     it "works" do
       Rc.p.logfile = Pa("#{$spec_data}/logfile")
 
-      Instance.log_time {
+      Instance.new(1,2).log_time {
         1 + 1
       }
     end
   end
 
-  describe "#after" do
-    it "works" do
-      i = Instance.new(:backup, :files)
-      i.after(:foo){ 1 }
-
-      Rc.hooks.backup.files.after.foo.call.should == 1
+  describe "#find_hooks" do
+    before :each do
+      @i = Instance.new(1,2)
     end
+
+    it "works" do
+      Rc.hooks = Optimism <<-EOF
+        all.default.after.halt = proc { 1 }
+        backup.default.after.halt = proc { 2 }
+
+        all.files.after.halt = proc { 3 } 
+        backup.files.after.halt = proc { 4 }
+      EOF
+
+      hooks = @i.find_hooks "backup", "files", "after", "halt"
+      hooks.map{|v| v.call}.should == [4, 2]
+    end
+
+    it "works" do
+      Rc.hooks = Optimism <<-EOF
+        all.default.after.halt = proc { 1 }
+
+        all.files.after.halt = proc { 3 } 
+      EOF
+
+      hooks = @i.find_hooks "backup", "files", "after", "halt"
+      hooks.map{|v| v.call}.should == [3, 1]
+    end
+
+
+
+
   end
 
-  describe "#before" do
-    it "works" do
-      i = Instance.new(:restore, :system)
-      lambda { i.before }.should raise_error(Oldtime::EFatal)
-    end
-  end
+
 end
