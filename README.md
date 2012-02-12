@@ -65,7 +65,7 @@ Let's begin.
 	# it calls "rsync -av /tmp/hello.oldtime/ /oldtime/"
 
 	# halt system after complete is done.
-	$ oldtime backup hello -h  # note options must at the end.
+	$ oldtime backup hello -h
 
 for a real world example, see [oldtime-archlinux-solution](https://github.com/GutenYe/oldtime-archlinux-solution).
 
