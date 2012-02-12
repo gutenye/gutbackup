@@ -12,15 +12,15 @@ module Oldtime
     def run
       run_hooks(:before, @before_hooks)
 
-      run_instance
+      run_instance(@action, @instance)
 
       run_hooks(:after, @after_hooks)
     end
 
     private
 
-    def run_instance
-      if blk=Rc.instances.backup[instance]
+    def run_instance(action, instance)
+      if blk=Rc.instances._fetch2("#{action}.#{instance}")
         log_time {
           blk.call
         }
@@ -30,24 +30,27 @@ module Oldtime
     end
 
     def run_hooks(pos, hooks)
+      # call default hook first
+      if hook=find_hook(@action, "default", pos, "default")
+        hook.call 
+      end
+
       hooks.each {|n|
-        hooks = find_hooks(@action, @instance, pos, n)
-        hooks.each {|v| v.call}
+        if hook=find_hook(@action, @instance, pos, n)
+          hook.call 
+        end
       }
     end
 
-    def find_hooks(action, instance, pos, task)
-      ret = []
-
+    def find_hook(action, instance, pos, task)
       p=[ "#{action}.#{instance}.#{pos}.#{task}", "all.#{instance}.#{pos}.#{task}" ]
           .find {|v| Rc.hooks._has_key2?(v) }
-      ret << Rc.hooks._fetch2(p) if p
 
-      p=[ "#{action}.default.#{pos}.#{task}", "all.default.#{pos}.#{task}" ]
-          .find {|v| Rc.hooks._has_key2?(v) }
-      ret << Rc.hooks._fetch2(p) if p
-
-      ret
+      if p
+        Rc.hooks._fetch2(p)
+      else
+        nil
+      end
     end
 
     def log_time(&blk)

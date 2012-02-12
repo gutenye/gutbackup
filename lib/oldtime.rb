@@ -9,7 +9,6 @@ module Oldtime
   autoload :VERSION, "oldtime/version"
   autoload :UI, "oldtime/ui"
   autoload :CLI, "oldtime/cli"
-  autoload :Hooker, "oldtime/hooker"
   autoload :Instance, "oldtime/instance"
 
   Error = Class.new Exception
@@ -76,7 +75,7 @@ private
       on
     end
 
-    Rc.hooks._set2 "#{on}.#{name}.#{task}", blk
+    Rc.hooks._store2 "#{on}.#{name}.#{task}", blk
   end
 
   def _instance(name, instance, &blk)

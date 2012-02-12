@@ -8,9 +8,9 @@ module Oldtime
     class_option "no-color", :type => :boolean, :banner => "Disable colorization in output"
     class_option "verbose",  :aliases => "-V", :type => :boolean, :banner => "Enable verbose output mode"
     class_option "dir", :aliases => "-d", :type => :string, :banner => "config directory"
-    class_option "halt", :aliases => "-h", :type => :boolean, :default => false :banner => "halt system after process completed. "
+    class_option "halt", :aliases => "-h", :default => false, :type => :boolean, :banner => "halt system after process completed. "
     class_option "after", :aliases => "-a", :type => :array, :banner => "after hook."
-    class_option "before", :aliases => "-b", :type => :string, :banner => "before hook."
+    class_option "before", :aliases => "-b", :type => :array, :banner => "before hook."
 
     def initialize(*)
       super
@@ -39,6 +39,8 @@ module Oldtime
 private
 
     def run(action, profile, instance, o)
+      o[:before] ||= []
+      o[:after] ||= []
       Rc.action = action
       Rc.profile = profile
       instance = Rc.instance = instance.to_sym
@@ -47,7 +49,7 @@ private
 
       o[:after] << "halt" if o.halt?
 
-      Instance.new(:restore, instance, o[:before].uniq, o[:after].uniq).run
+      Instance.new(action, instance, o[:before].uniq, o[:after].uniq).run
     end
 
     def load_profile(profile)

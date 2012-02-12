@@ -2,7 +2,7 @@ require "spec_helper"
 Instance = Oldtime::Instance
 
 class Instance
-  public :log_time, :find_hooks
+  public :log_time, :find_hook
 end
 
 describe Instance do
@@ -16,39 +16,38 @@ describe Instance do
     end
   end
 
-  describe "#find_hooks" do
+  describe "#find_hook" do
     before :each do
       @i = Instance.new(1,2)
     end
 
-    it "works" do
+    it "finds first" do
       Rc.hooks = Optimism <<-EOF
-        all.default.after.halt = proc { 1 }
-        backup.default.after.halt = proc { 2 }
-
-        all.files.after.halt = proc { 3 } 
-        backup.files.after.halt = proc { 4 }
+        all.files.after.halt = proc { 1 } 
+        backup.files.after.halt = proc { 2 }
       EOF
 
-      hooks = @i.find_hooks "backup", "files", "after", "halt"
-      hooks.map{|v| v.call}.should == [4, 2]
+      hook = @i.find_hook "backup", "files", "after", "halt"
+      hook.call.should == 2
     end
 
-    it "works" do
+    it "finds the second one" do
       Rc.hooks = Optimism <<-EOF
-        all.default.after.halt = proc { 1 }
-
-        all.files.after.halt = proc { 3 } 
+        all.files.after.halt = proc { 11 } 
       EOF
 
-      hooks = @i.find_hooks "backup", "files", "after", "halt"
-      hooks.map{|v| v.call}.should == [3, 1]
+      hook = @i.find_hook "backup", "files", "after", "halt"
+      hook.call.should == 11
     end
 
+    it "doesn't find one " do
+      Rc.hooks = Optimism <<-EOF
+        all.files.after.halt = proc { 21 } 
+        backup.files.after.halt = proc { 22 }
+      EOF
 
-
-
+      hook = @i.find_hook "backup", "files", "after", "notify"
+      hook.should be_nil
+    end
   end
-
-
 end
