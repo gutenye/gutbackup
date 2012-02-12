@@ -8,7 +8,6 @@ Oldtime, a highly customizable and configurable backup & restore system
 | Documentation: | http://rubydoc.info/gems/oldtime/frames   |
 | Issue Tracker: | https://github.com/GutenYe/oldtime/issues |
 
-
 Getting Started
 --------------
 
@@ -65,6 +64,9 @@ Let's begin.
 	$ oldtime restore hello
 	# it calls "rsync -av /tmp/hello.oldtime/ /oldtime/"
 
+	# halt system after complete is done.
+	$ oldtime backup hello -h  # note options must at the end.
+
 for a real world example, see [oldtime-archlinux-solution](https://github.com/GutenYe/oldtime-archlinux-solution).
 
 see Optimism Syntax: https://github.com/GutenYe/optimism
@@ -106,9 +108,15 @@ see ERB Syntax: http://ruby-doc.org/stdlib-1.9.3/libdoc/erb/rdoc/ERB.html
 			puts "halt"
 		end
 
-	$ oldtime backup hello -a halt
+		after :notify, :on => "backup" do
+			puts "notify"
+		end
+
+
+	$ oldtime backup hello -a halt notify
 	# do backup
 	# puts "halt"
+	# puts "notify"
 	
 
 Install
