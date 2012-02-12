@@ -40,7 +40,7 @@ it will have these files:
 
 	  require "oldtime/rsync"
 	  
-	  configure <<EOF
+	  configure <<-EOF
 	    backup:
 	      rsync.options = "-av --delete" # get this variable by Rc.backup.rsync.options
 	    
