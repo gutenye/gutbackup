@@ -71,6 +71,46 @@ see Optimism Syntax: https://github.com/GutenYe/optimism
 
 see ERB Syntax: http://ruby-doc.org/stdlib-1.9.3/libdoc/erb/rdoc/ERB.html
 
+### hooks
+
+	# hello.conf 
+
+		before do
+			puts "before"
+		end
+
+		backup do
+			..
+		end
+
+		after do
+			puts "after"
+		end
+
+	$ oldtimie backup hello
+	# puts "before" 
+	# do backup
+	# puts "after"
+
+
+#### named hook
+
+		
+	# hello.conf
+
+		backup :files do
+			..
+		end
+
+		after :halt, :on => "backup.files" do
+			puts "halt"
+		end
+
+	$ oldtime backup hello -a halt
+	# do backup
+	# puts "halt"
+	
+
 Install
 -------
 
