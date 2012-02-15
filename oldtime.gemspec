@@ -15,7 +15,7 @@ The backup & restore system that fits you well.  It's a highly customizable and 
 	s.rubyforge_project = "xx"
 
 	s.files = `git ls-files`.split("\n")
-	#s.executables = ["x"]
+	s.executables = ["oldtime"]
 
 	s.add_dependency "tagen", "~>1.1.4"
   s.add_dependency "pa", "~>1.2.0"
