@@ -126,6 +126,10 @@ Install
 	pacman -S ruby rsync
 	gem install oldtime
 
+	# /etc/cron.weekly/cleanup_pkg
+		pacman -Sc --noconfirm
+	
+
 Note on Patches/Pull Requests
 -----------------------------
 

@@ -1,7 +1,7 @@
 PATH
   remote: /home/guten/dev/one/optimism
   specs:
-    optimism (3.1.0)
+    optimism (3.1.2)
       hike (~> 1.2.0)
 
 PATH
@@ -16,7 +16,7 @@ PATH
 PATH
   remote: /home/guten/dev/one/tagen
   specs:
-    tagen (1.1.4)
+    tagen (1.1.5)
       activesupport (~> 3.1.0)
       i18n
 
