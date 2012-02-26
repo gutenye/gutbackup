@@ -1,3 +1,5 @@
+require "thor"
+
 module Oldtime
   class CLI < Thor
     include Thor::Actions

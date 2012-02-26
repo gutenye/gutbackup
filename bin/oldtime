@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+
 require_relative "../lib/oldtime"
 
 begin
@@ -10,5 +11,8 @@ rescue Oldtime::Error => e
 rescue Interrupt => e
   Oldtime.ui.error "\nQuitting..."
   Oldtime.ui.debug e.backtrace.join("\n")
+  exit 1
+rescue Exception => e
+  raise e
   exit 1
 end

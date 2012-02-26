@@ -1,9 +1,8 @@
-libdir = File.dirname(__FILE__)
-$LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
+libdir = File.dirname(__FILE__); $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
 
-ENV["BUNDLE_GEMFILE"] = File.expand_path("../../Gemfile", __FILE__)
-require "bundler/setup"
-Bundler.require
+require "tagen/core"
+require "optimism"
+require "pa"
 
 module Oldtime
   autoload :VERSION, "oldtime/version"
