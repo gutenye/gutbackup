@@ -59,7 +59,9 @@ module Oldtime
       blk.call
 
       escape_time = Time::Deta.new((Time.time-start_time).to_i).display
-      File.append(Rc.p.logfile.p, "\n\nTOTAL ESCAPE TIME: #{escape_time}")
+      msg="\n\nTOTAL ESCAPE TIME: #{escape_time}"
+      Oldtime.ui.say msg
+      File.append(Rc.p.logfile.p, msg)
     end
   end
 end

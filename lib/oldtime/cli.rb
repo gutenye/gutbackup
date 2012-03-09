@@ -9,7 +9,8 @@ module Oldtime
     # default_task :install
     class_option "no-color", :type => :boolean, :banner => "Disable colorization in output"
     class_option "verbose",  :aliases => "-V", :type => :boolean, :banner => "Enable verbose output mode"
-    class_option "dir", :aliases => "-d", :type => :string, :banner => "config directory"
+    class_option "dir", :aliases => "-d", :type => :string, :banner => "config directory. default is /oldtime/oldtime"
+    class_option "log", :type => :string, :banner => "log file. default is /var/log/oldtime.<profile>.log"
     class_option "halt", :aliases => "-h", :default => false, :type => :boolean, :banner => "halt system after process completed. "
     class_option "after", :aliases => "-a", :type => :array, :banner => "after hook."
     class_option "before", :aliases => "-b", :type => :array, :banner => "before hook."
@@ -46,7 +47,7 @@ private
       Rc.action = action
       Rc.profile = profile
       instance = Rc.instance = instance.to_sym
-      setup_logfile
+      Rc.p.logfile = o[:log] || Pa("/var/log/oldtime.#{Rc.profile}.log")
       load_profile profile
 
       o[:after] << "halt" if o.halt?
@@ -62,13 +63,6 @@ private
       else
         raise Error, "can't find the profile configuration file -- #{file}"
       end
-    end
-
-    def setup_logfile
-      # logfile
-      logdir = Pa("#{Rc.p.home}/#{Rc.profile}.log")
-      Pa.mkdir_f logdir
-      Rc.p.logfile = Pa("#{logdir}/#{Rc.action}.#{Time.now.strftime('%Y%m%d%H%M')}")
     end
   end
 end
