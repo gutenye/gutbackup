@@ -20,4 +20,5 @@ The backup & restore system that fits you well.  It's a highly customizable and 
 	s.add_dependency "tagen", "~>1.1.4"
   s.add_dependency "pa", "~>1.2.0"
   s.add_dependency "optimism", "~>3.1.0"
+  s.add_dependency "thor", "~> 0.14.6"
 end
