@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+set -e
+export -n CDPATH
+
+VERSION="2.0.0"
+
+####
+# Lib
+####
+
+absolutename() {
+	readlink -f $1
+}
+
+extname() {
+	[ $1 =~ '\.' ] && echo ${1##*.} || echo ""
+}
+
+filename() {
+	dirname ${1%.*}
+}
+
+if [ -n "$OLDTIME_DEBUG" ]; then
+  export PS4='+ [${BASH_SOURCE##*/}:${LINENO}] '
+  set -x
+fi
+
+bin_path=`dirname $(absolutename "$0")`
+OLDTIME_ROOT=`dirname "$bin_path"`
+export OLDTIME_ROOT
+export OLDTIME_DIR="/oldtime"
+
+shopt -s nullglob
+
+for plugin_bin in "${OLDTIME_ROOT}/plugins/"*/bin; do
+  bin_path="${bin_path}:${plugin_bin}"
+done
+export PATH="${bin_path}:${PATH}"
+
+hook_path="${OLDTIME_HOOK_PATH}:${OLDTIME_ROOT}/oldtime.d:/usr/local/etc/oldtime.d:/etc/oldtime.d:/usr/lib/oldtime/hooks"
+for plugin_hook in "${OLDTIME_ROOT}/plugins/"*/etc/oldtime.d; do
+  hook_path="${hook_path}:${plugin_hook}"
+done
+export OLDTIME_HOOK_PATH="$hook_path"
+
+shopt -u nullglob
+
+command="$1"
+case "$command" in
+	"" | "-h" | "--help" )
+		echo -e "oldtime $VERSION\n`oldtime-help`" >&2
+		;;
+	"-v" )
+		exec oldtime---version
+		;;
+	* )
+		command_path=`command -v "oldtime-$command" || true`
+		if [ -z "$command_path" ]; then
+			echo "oldtime: no such command \`$command'" >&2
+			exit 1
+		fi
+
+		shift 1
+		exec "$command_path" "$@"
+		;;
+esac

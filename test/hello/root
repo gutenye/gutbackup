@@ -1,0 +1,10 @@
+$SRC/ $DEST/hello/root/
+
+[files]
+/foo
+# comment
+
+/bar
+
+[exclude]
+/baz
