@@ -16,11 +16,11 @@
 #
 
 set -e
-[ -n "$OLDTIME_DEBUG" ] && set -x
+[[ -n "$OLDTIME_DEBUG" ]] && set -x
 
 invoke_rsync() {
-	end_cmd=`sed "1s~\\$SRC~$SRC~;s~\\$DEST~$DEST~;q" "$1"`
-	end_cmd=`echo $end_cmd | awk '{print $2, $1}'`
+	end_cmd=$(sed "1s~\\$SRC~$SRC~;s~\\$DEST~$DEST~;q" "$1")
+	end_cmd=$(echo $end_cmd | awk '{print $2, $1}')
 	cmd="$RESTORE_OPTIONS $RSYNC_OPTIONS $end_cmd"
 	echo ">> rsync $cmd"
 	rsync $cmd
@@ -31,7 +31,7 @@ invoke_rsync() {
 rrsync() {
 	file="$profile_dir/$1"
 
-	if [ ! -e "$file" ]; then
+	if [[ ! -e "$file" ]]; then
 		echo "oldtime: file does not exists -- $file" >&2
 		exit 1
 	fi
@@ -45,7 +45,7 @@ source "$OLDTIME_ROOT/libexec/lib.sh"
 # Main
 #####
 
-if [ -z "$1" ]; then
+if [[ -z "$1" ]]; then
   oldtime-help --usage restore >&2
   exit 1
 fi
@@ -60,15 +60,15 @@ shift $(( OPTIND - 1 ))
 profile="$1"
 instance="$2"
 conf="$OLDTIME_DIR/$profile.conf"
-profile_dir=`absolutename "$OLDTIME_DIR/$profile"`
+profile_dir=$(absolutename "$OLDTIME_DIR/$profile")
 
-if [ ! -e "$conf" ]; then 
+if [[ ! -e "$conf" ]]; then 
 	echo "oldtime: config file doesn't exists -- $conf " >&2
 	exit 1
 fi
 
-[ ! -d "$OLDTIME_DIR/work" ] && mkdir "$OLDTIME_DIR/work"
-[ ! -d "$OLDTIME_DIR/work/tmp" ] && mkdir "$OLDTIME_DIR/work/tmp"
+[[ ! -d "$OLDTIME_DIR/work" ]] && mkdir "$OLDTIME_DIR/work"
+[[ ! -d "$OLDTIME_DIR/work/tmp" ]] && mkdir "$OLDTIME_DIR/work/tmp"
 
 if [[ -z "$instance" ]]; then
 	restore_func="restore"
@@ -86,7 +86,7 @@ RSYNC_OPTIONS="$*"
 echo ">> Load $conf" 
 source "$conf"
 
-if [[ `type -t "$restore_func"` != "function" ]]; then
+if [[ $(type -t "$restore_func") != "function" ]]; then
 	echo "oldtime: function \`$restore_func' not defined."
 	exit 1
 fi

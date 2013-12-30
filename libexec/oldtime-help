@@ -15,7 +15,7 @@
 OLDTIME_COMMANDS="backup"
 
 set -e
-[ -n "$OLDTIME_DEBUG" ] && set -x
+[[ -n "$OLDTIME_DEBUG" ]] && set -x
 
 command_path() {
   local command="$1"
@@ -83,7 +83,7 @@ collect_documentation() {
 
 documentation_for() {
   local filename="$(command_path "$1")"
-  if [ -n "$filename" ]; then
+  if [[ -n "$filename" ]]; then
     extract_initial_comment_block < "$filename" | collect_documentation
   fi
 }
@@ -93,7 +93,7 @@ print_summary() {
   local summary usage help
   eval "$(documentation_for "$command")"
 
-  if [ -n "$summary" ]; then
+  if [[ -n "$summary" ]]; then
     printf "   %-9s   %s\n" "$command" "$summary"
   fi
 }
@@ -108,15 +108,15 @@ print_help() {
   local command="$1"
   local summary usage help
   eval "$(documentation_for "$command")"
-  [ -n "$help" ] || help="$summary"
+  [[ -n "$help" ]] || help="$summary"
 
-  if [ -n "$usage" -o -n "$summary" ]; then
-    if [ -n "$usage" ]; then
+  if [[ -n "$usage" -o -n "$summary" ]]; then
+    if [[ -n "$usage" ]]; then
       echo "$usage"
     else
       echo "Usage: oldtime ${command}"
     fi
-    if [ -n "$help" ]; then
+    if [[ -n "$help" ]]; then
       echo
       echo "$help"
       echo
@@ -131,18 +131,18 @@ print_usage() {
   local command="$1"
   local summary usage help
   eval "$(documentation_for "$command")"
-  [ -z "$usage" ] || echo "$usage"
+  [[ -z "$usage" ]] || echo "$usage"
 }
 
 unset usage
-if [ "$1" = "--usage" ]; then
+if [[ "$1" == "--usage" ]]; then
   usage="1"
   shift
 fi
 
-if [ -z "$1" ] || [ "$1" == "oldtime" ]; then
+if [[ -z "$1" ]] || [[ "$1" == "oldtime" ]]; then
   echo "Usage: oldtime <command> [<args>]"
-  [ -z "$usage" ] || exit
+  [[ -z "$usage" ]] || exit
   echo
   echo "Some useful oldtime commands are:"
   print_summaries $OLDTIME_COMMANDS
@@ -151,8 +151,8 @@ if [ -z "$1" ] || [ "$1" == "oldtime" ]; then
   echo "For full documentation, see: README"
 else
   command="$1"
-  if [ -n "$(command_path "$command")" ]; then
-    if [ -n "$usage" ]; then
+  if [[ -n "$(command_path "$command")" ]]; then
+    if [[ -n "$usage" ]]; then
       print_usage "$command"
     else
       print_help "$command"
