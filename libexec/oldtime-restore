@@ -18,6 +18,9 @@
 set -e
 [[ -n "$OLDTIME_DEBUG" ]] && set -x
 
+source "$OLDTIME_ROOT/libexec/lib.sh"
+source "$OLDTIME_ROOT/libexec/helpers.sh"
+
 invoke_rsync() {
 	end_cmd=$(sed "1s~\\$SRC~$SRC~;s~\\$DEST~$DEST~;q" "$1")
 	end_cmd=$(echo $end_cmd | awk '{print $2, $1}')
@@ -38,8 +41,6 @@ rrsync() {
 
 	invoke_rsync "$file"
 }
-
-source "$OLDTIME_ROOT/libexec/lib.sh"
 
 #####
 # Main

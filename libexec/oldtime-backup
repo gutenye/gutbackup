@@ -19,6 +19,9 @@
 set -e
 [[ -n "$OLDTIME_DEBUG" ]] && set -x
 
+source "$OLDTIME_ROOT/libexec/lib.sh"
+source "$OLDTIME_ROOT/libexec/helpers.sh"
+
 # parse file and write each section to files
 # parse_file(file) -> files_cmd "--files-from files"
 parse_file() {
@@ -52,7 +55,7 @@ parse_file() {
 invoke_rsync() {
 	rm -f tmp/*
 	files_cmd=$(parse_file "$1")
-	end_cmd=$(sed "1s~\\$SRC~$SRC~;s~\\$DEST~$DEST~;q" "$1")
+	end_cmd=$(sed "1s~\$SRC~$SRC~;s~\$DEST~$DEST~;q" "$1")
 	cmd="$files_cmd $BACKUP_OPTIONS $RSYNC_OPTIONS $end_cmd"
 	echo ">> rsync $cmd"
 	rsync $cmd
@@ -71,7 +74,6 @@ brsync() {
 	invoke_rsync "$file"
 }
 
-source "$OLDTIME_ROOT/libexec/lib.sh"
 
 #####
 # Main

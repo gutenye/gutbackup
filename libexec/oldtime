@@ -2,29 +2,15 @@
 set -e
 export -n CDPATH
 
+
 VERSION="2.0.0"
-
-####
-# Lib
-####
-
-absolutename() {
-	readlink -f $1
-}
-
-extname() {
-	[ $1 =~ '\.' ] && echo ${1##*.} || echo ""
-}
-
-filename() {
-	dirname ${1%.*}
-}
 
 if [ -n "$OLDTIME_DEBUG" ]; then
   export PS4='+ [${BASH_SOURCE##*/}:${LINENO}] '
   set -x
 fi
 
+absolutename() { readlink -f "$1"; }
 bin_path=`dirname $(absolutename "$0")`
 OLDTIME_ROOT=`dirname "$bin_path"`
 export OLDTIME_ROOT
