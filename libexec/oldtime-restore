@@ -5,14 +5,14 @@
 # Usage: oldtime restore [options] <profile> [instance] [rsync_options]
 #
 # [OPTIONS]
-#   -d      # oldtime config directory, default is /oldtime
+#   -c      # oldtime config directory, default is /oldtime
 #
 # Default working directory is /oldtime/work.
 #
 # Examples:
 #
 #   oldtime restore hello vm
-#   oldtime restore -d myoldtime hello vm --dry-run
+#   oldtime restore -c myoldtime hello vm --dry-run
 #
 
 set -e
@@ -22,7 +22,7 @@ source "$OLDTIME_ROOT/libexec/lib.sh"
 source "$OLDTIME_ROOT/libexec/helpers.sh"
 
 invoke_rsync() {
-	end_cmd=$(sed "1s~\\$SRC~$SRC~;s~\\$DEST~$DEST~;q" "$1")
+	end_cmd=$(sed "1s~\$SRC~$SRC~;s~\$DEST~$DEST~;q" "$1")
 	end_cmd=$(echo $end_cmd | awk '{print $2, $1}')
 	cmd="$RESTORE_OPTIONS $RSYNC_OPTIONS $end_cmd"
 	echo ">> rsync $cmd"
@@ -51,9 +51,9 @@ if [[ -z "$1" ]]; then
   exit 1
 fi
 
-while getopts "d:" opt; do
+while getopts "c:" opt; do
 	case $opt in
-		d ) OLDTIME_DIR=$OPTARG ;;
+		c ) OLDTIME_DIR=$OPTARG ;;
 	esac
 done
 shift $(( OPTIND - 1 ))
@@ -61,12 +61,13 @@ shift $(( OPTIND - 1 ))
 profile="$1"
 instance="$2"
 conf="$OLDTIME_DIR/$profile.conf"
-profile_dir=$(absolutename "$OLDTIME_DIR/$profile")
 
 if [[ ! -e "$conf" ]]; then 
 	echo "oldtime: config file doesn't exists -- $conf " >&2
 	exit 1
 fi
+
+profile_dir=$(absolutename "$OLDTIME_DIR/$profile")
 
 [[ ! -d "$OLDTIME_DIR/work" ]] && mkdir "$OLDTIME_DIR/work"
 [[ ! -d "$OLDTIME_DIR/work/tmp" ]] && mkdir "$OLDTIME_DIR/work/tmp"

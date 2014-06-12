@@ -5,7 +5,7 @@
 # Usage: oldtime backup [options] <profile> [instance] [rsync_options]
 #
 # [OPTIONS]
-#   -d      # oldtime config directory, default is /oldtime
+#   -c      # oldtime config directory, default is /oldtime
 #
 # Default working directory is /oldtime/work.
 #
@@ -13,7 +13,7 @@
 #
 #   oldtime backup hello
 #   oldtime backup hello vm
-#   oldtime backup -d myoldtime hello --dry-run
+#   oldtime backup -c myoldtime hello --dry-run
 #
 
 set -e
@@ -84,9 +84,9 @@ if [[ -z "$1" ]]; then
   exit 1
 fi
 
-while getopts "d:" opt; do
+while getopts "c:" opt; do
 	case $opt in
-		d ) OLDTIME_DIR=$OPTARG ;;
+		c ) OLDTIME_DIR=$OPTARG ;;
 	esac
 done
 shift $(( OPTIND - 1 ))
