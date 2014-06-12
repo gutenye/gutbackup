@@ -15,7 +15,7 @@ Getting started
 ---------------
 
 	$ oldtime backup hello
-	
+
 For a gettting started example, see [oldtime-helloworld](https://github.com/GutenYe/oldtime-helloworld). <br\>
 For a real world example, see [oldtime-archlinux-solution](https://github.com/GutenYe/oldtime-archlinux-solution).
 
@@ -27,7 +27,7 @@ Install
 -------
 
 	# archlinux
-	$ yaourt -S oldtime  # install from aur 
+	$ yaourt -S oldtime  # install from aur
 
 	# /etc/cron.weekly/cleanup_pkg
 		pacman -Sc --noconfirm
