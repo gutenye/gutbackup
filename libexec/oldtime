@@ -2,7 +2,7 @@
 set -e
 export -n CDPATH
 
-VERSION="2.0.0"
+VERSION="2.1.0"
 
 if [ -n "$OLDTIME_DEBUG" ]; then
   export PS4='+ [${BASH_SOURCE##*/}:${LINENO}] '
