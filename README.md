@@ -26,11 +26,9 @@ Environment variables used in script.
 Install
 -------
 
-	# archlinux
-	$ yaourt -S oldtime  # install from aur
+**Archlinux**: Install [oldtime](https://aur.archlinux.org/packages/oldtime/) from AUR using [aura](https://github.com/aurapm/aura) helper
 
-	# /etc/cron.weekly/cleanup_pkg
-		pacman -Sc --noconfirm
+	# aura -A oldtime
 
 Development
 ----------
@@ -44,7 +42,7 @@ Copyright
 
 (the MIT License)
 
-Copyright (c) 2013 Guten
+Copyright (c) 2013-2015 Guten
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
