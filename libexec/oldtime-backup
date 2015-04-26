@@ -31,14 +31,14 @@ parse_file() {
 		# skip comment
 		/^ *#/ { next }
 
-		/^ *\[.*\] *$/ {  
+		/^ *\[.*\] *$/ {
 			begin = 1
 			title = substr($0, 2, length($0)-2)
 			gsub(/^[ \t]*|[ \t]*$/, "", title) # strip
 			next
 		}
 
-		begin == 1 { 
+		begin == 1 {
 			content[title] = content[title] $0 "\n"
 		}
 
@@ -96,7 +96,7 @@ instance="$2"
 conf="$OLDTIME_DIR/$profile.conf"
 profile_dir=$(absolutename "$OLDTIME_DIR/$profile")
 
-if [[ ! -e "$conf" ]]; then 
+if [[ ! -e "$conf" ]]; then
 	echo "oldtime: config file doesn't exists -- $conf " >&2
 	exit 1
 fi
@@ -117,7 +117,7 @@ else
 fi
 RSYNC_OPTIONS="$*"
 
-echo ">> Load $conf" 
+echo ">> Load $conf"
 source "$conf"
 
 if [[ $(type -t "$backup_func") != "function" ]]; then
