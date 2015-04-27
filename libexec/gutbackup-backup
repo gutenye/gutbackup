@@ -24,10 +24,12 @@ source "$GUTBACKUP_ROOT/libexec/helpers.sh"
 # Settings
 dir="/gutbackup"
 src="/"
-backup_options="--archive --hard-links --acls --xattrs --compress --verbose --human-readable -P --stats --del --delete-excluded"
+backup_options="--archive --hard-links --acls --xattrs --compress --verbose --human-readable -P --stats --del --delete-excluded --recursive"
+# --recursive is for --from-file
 
 main() {
   # handle arguments
+  TEMP="${TEMP:-/tmp}"
   profile="$1"; shift
   case "$1" in
     "" | -* ) instance="default" ;;
