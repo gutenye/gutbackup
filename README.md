@@ -1,56 +1,48 @@
-oldtime, a bash script using rsync to provide a backup solution.
+gutbackup, the simplest rsync wrapper for backuping Linux system
 ================================
+
+| MIT | Documentation | 
 
 |                |                                           |
 |----------------|------------------------------------------ |
-| Homepage:      | https://github.com/GutenYe/oldtime        |
-| Author:	       | Guten                                     |
-| License:       | GPL                                       |
-| Documentation: | http://rubydoc.info/gems/oldtime/frames   |
-| Issue Tracker: | https://github.com/GutenYe/oldtime/issues |
+| **Install**    |                        |
+| ArchLinux      | `$ pacaur -S gutbackup` |
 
-a easy to use backup solution based on rsync.
 
-Getting started
+Getting Started
 ---------------
 
-	$ oldtime backup hello
+	# ln -s /media/backup /gutbackup
 
-For a gettting started example, see [oldtime-helloworld](https://github.com/GutenYe/oldtime-helloworld). <br\>
-For a real world example, see [oldtime-archlinux-solution](https://github.com/GutenYe/oldtime-archlinux-solution).
 
-Environment variables used in script.
+### I Also Use These Backup Apps
 
-	OLDTIME_DEBUG=1
-
-Install
--------
-
-**Archlinux**: Install [oldtime](https://aur.archlinux.org/packages/oldtime/) from AUR using [aura](https://github.com/aurapm/aura) helper
-
-	# aura -A oldtime
-
-Development
-----------
-
-Run a test
-
-	bin/oldtime backup -d test hello
+- [Syncthing](https://syncthing.net/): Relatime Backup
+- Android: [Helium](https://play.google.com/store/apps/details?id=com.koushikdutta.backup&hl=en)
+- Windows: [File History](http://windows.microsoft.com/en-us/windows-8/how-use-file-history)
+- Mac OS X: [Time Machine](https://support.apple.com/en-us/HT201250)
 
 Copyright
 ---------
 
-Copyright 2013-2015 Guten Ye
+The MIT License (MIT)
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+Copyright (c) 2013-2015 Guten Ye
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
