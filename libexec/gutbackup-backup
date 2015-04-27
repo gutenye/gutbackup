@@ -36,7 +36,8 @@ main() {
   extra_rsync_options="$@"
   profile_file="$dir/$profile.conf"                 # hello.conf
   profile_dir="$dir/$profile"                       # hello/
-  instance_file="$profile_dir/$instance"            # hello/default
+  instance_file="$profile_dir/$instance"            # hello/<instance>
+  work_dir="$dir/data/$profile/work"                # data/hello/work
 
   # source a b
   [[ -e "$profile_file" ]] && source "$profile_file"
@@ -49,8 +50,8 @@ main() {
       run this
     }
   fi
-  mkdir "$TEMP/gutbackup" 2>/dev/null
-  cd "$TEMP/gutbackup"
+  mkdir -p "$work_dir" 2>/dev/null
+  cd "$work_dir"
   backup
   cd "$OLDPWD"
 }
