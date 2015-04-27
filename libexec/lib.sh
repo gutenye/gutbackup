@@ -1,5 +1,27 @@
+pd() {
+  echo "$@"
+}
+
+say() {
+  echo "$@"
+}
+
+error() {
+  echo "$@" >&2
+}
+
+error_exit() {
+  echo "$@" >&2
+  exit 1
+}
+
+debug() {
+  echo "$@"
+}
+
+
 absolutename() {
-	readlink -f "$1"
+	readlink -m "$1"
 }
 
 filename() {

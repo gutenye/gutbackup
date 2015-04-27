@@ -1,18 +1,9 @@
-before() { :; }
-after() { :; }
-
 run_as_root() {
-	if [[ `id -u` -ne 0 ]]; then 
-		echo "oldtime: you cannot perform this operation unless you are root." >&2
-		exit 1
-	fi
+  [[ $(id -u) -ne 0 ]] && error_exit "gutbackup: you cannot perform this operation unless you are root."
 }
 
 check_mountpoint() {
-	if ! mountpoint -q "$1"; then 
-		echo "oldtime: \`$1' is unmounted." >&2
-		exit 1
-	fi
+	[[ ! mountpoint -q "$1" ]] && error_exit "gutbackup: \`$1' is unmounted."
 }
 
 # vim: ft=sh

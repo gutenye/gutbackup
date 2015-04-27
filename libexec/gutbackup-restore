@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+#
+# Summary: Do a restore action
+#
+# Usage: gutbackup restore <profile> [instance] [rsync_options]
+#
+# [OPTIONS]
+#   -d      # dir, default is /gutbackup
+#
+# Examples:
+#
+#   gutbackup restore hello system --dry-run
+#
+
+set -e
+[[ -n "$GUTBACKUP_DEBUG" ]] && set -x
+
+source "$GUTBACKUP_ROOT/libexec/lib.sh"
+source "$GUTBACKUP_ROOT/libexec/helpers.sh"
+
+[[ -z "$1" ]] && gutbackup-help --usage backup >&2 && exit 1
+
+# Settings
+dir="/gutbackup"
+src="/"
+restore_options="--archive --hard-links --acls --xattrs --compress --verbose --human-readable -P --stats"
+
+main() {
+  # handle arguments
+  profile="$1"; shift
+  case "$1" in
+    "" | -* ) instance="default" ;;
+    * ) instance="$1"; shift ;;
+  esac
+  extra_rsync_options="$@"
+  profile_file="$dir/$profile.conf"                 # hello.conf
+  profile_dir="$dir/$profile"                       # hello/
+  instance_file="$profile_dir/$instance"            # hello/default
+
+  # source a b
+  [[ -e "$profile_file" ]] && source "$profile_file"
+  [[ ! -e "$instance_file" ]] && error_exit "gutbackup: instance file does not exists -- $instance_file"
+  source "$instance_file"
+
+  # main
+  if [[ $(type -t "restore") != "function" ]]; then
+    restore() {
+      run this
+    }
+  fi
+  mkdir "$TEMP/gutbackup" 2>/dev/null
+  cd "$TEMP/gutbackup"
+  restore
+  cd "$OLDPWD"
+}
+
+#####
+# DSL
+#####
+
+# run this
+# run system
+run() {
+  [[ "$1" == "this" ]] && loc_instance="$instance" || loc_instance="$1"
+  cmd="$restore_options $extra_rsync_options $dir/data/$profile/$loc_instance/ $src/"
+  say ">> rsync $cmd"
+  rsync $cmd
+}
+
+main "$@"

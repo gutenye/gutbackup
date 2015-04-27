@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+set -e
+export -n CDPATH
+
+VERSION="2.1.0"
+
+if [ -n "$GUTBACKUP_DEBUG" ]; then
+  export PS4='+ [${BASH_SOURCE##*/}:${LINENO}] '
+  set -x
+fi
+
+absolutename() { readlink -f "$1"; }
+bin_path=`dirname $(absolutename "$0")`
+GUTBACKUP_ROOT=`dirname "$bin_path"`
+export GUTBACKUP_ROOT
+export GUTBACKUP_DIR="/gutbackup"
+
+shopt -s nullglob
+
+for plugin_bin in "${GUTBACKUP_ROOT}/plugins/"*/bin; do
+  bin_path="${bin_path}:${plugin_bin}"
+done
+export PATH="${bin_path}:${PATH}"
+
+hook_path="${GUTBACKUP_HOOK_PATH}:${GUTBACKUP_ROOT}/gutbackup.d:/usr/local/etc/gutbackup.d:/etc/gutbackup.d:/usr/lib/gutbackup/hooks"
+for plugin_hook in "${GUTBACKUP_ROOT}/plugins/"*/etc/gutbackup.d; do
+  hook_path="${hook_path}:${plugin_hook}"
+done
+export GUTBACKUP_HOOK_PATH="$hook_path"
+
+shopt -u nullglob
+
+command="$1"
+case "$command" in
+	"" | "-h" | "--help" )
+		echo -e "gutbackup $VERSION\n`gutbackup-help`" >&2
+		;;
+	"-v" )
+		exec gutbackup---version
+		;;
+	* )
+		command_path=`command -v "gutbackup-$command" || true`
+		if [ -z "$command_path" ]; then
+			echo "gutbackup: no such command \`$command'" >&2
+			exit 1
+		fi
+
+		shift 1
+		exec "$command_path" "$@"
+		;;
+esac

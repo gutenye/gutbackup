@@ -2,7 +2,7 @@
 #
 # Summary: Display help for a command
 #
-# Usage: oldtime help [--usage] COMMAND
+# Usage: gutbackup help [--usage] COMMAND
 #
 # Parses and displays help contents from a command's source file.
 #
@@ -12,14 +12,14 @@
 # The remainder of the comment block is displayed as extended
 # documentation.
 
-OLDTIME_COMMANDS="backup"
+GUTBACKUP_COMMANDS="gutbackup"
 
 set -e
-[[ -n "$OLDTIME_DEBUG" ]] && set -x
+[[ -n "$GUTBACKUP_DEBUG" ]] && set -x
 
 command_path() {
   local command="$1"
-  command -v oldtime-"$command" || command -v oldtime-sh-"$command" || true
+  command -v gutbackup-"$command" || command -v gutbackup-sh-"$command" || true
 }
 
 extract_initial_comment_block() {
@@ -114,7 +114,7 @@ print_help() {
     if [[ -n "$usage" ]]; then
       echo "$usage"
     else
-      echo "Usage: oldtime ${command}"
+      echo "Usage: gutbackup ${command}"
     fi
     if [[ -n "$help" ]]; then
       echo
@@ -140,14 +140,14 @@ if [[ "$1" == "--usage" ]]; then
   shift
 fi
 
-if [[ -z "$1" ]] || [[ "$1" == "oldtime" ]]; then
-  echo "Usage: oldtime <command> [<args>]"
+if [[ -z "$1" ]] || [[ "$1" == "gutbackup" ]]; then
+  echo "Usage: gutbackup <command> [<args>]"
   [[ -z "$usage" ]] || exit
   echo
-  echo "Some useful oldtime commands are:"
-  print_summaries $OLDTIME_COMMANDS
+  echo "Some useful gutbackup commands are:"
+  print_summaries $GUTBACKUP_COMMANDS
   echo
-  echo "See \`oldtime help <command>' for information on a specific command."
+  echo "See \`gutbackup help <command>' for information on a specific command."
   echo "For full documentation, see: README"
 else
   command="$1"
@@ -158,7 +158,7 @@ else
       print_help "$command"
     fi
   else
-    echo "oldtime: no such command \`$command'" >&2
+    echo "gutbackup: no such command \`$command'" >&2
     exit 1
   fi
 fi
