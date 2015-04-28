@@ -105,7 +105,7 @@ invoke_rsync() {
     echo "$exclude" > $TEMP/exclude.gutbackup
     cmd="$cmd --exclude-from $TEMP/exclude.gutbackup"
   fi
-  run_cmd rsync $cmd $backup_options $extra_rsync_options $client_host_with_colon$src/ $host_with_colon$dir/$profile/$loc_instance/
+  run_cmd rsync $cmd $backup_options $extra_rsync_options $client_host_with_colon$src/ $host_with_colon$dir/$profile/$instance/
 }
 
 main "$@"
