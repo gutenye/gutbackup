@@ -1,3 +1,9 @@
+run_cmd() {
+  cmd="$1"; shift
+  echo ">> $cmd $@"
+  $cmd $@
+}
+
 pd() {
   echo "$@"
 }
