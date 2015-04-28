@@ -1,9 +1,9 @@
 gutbackup, the simplest rsync wrapper for backuping Linux system
 ================================
 
-[Homepage](https://github.com/%%username%%/%%project%%) |
-[Documentation](https://github.com/%%username%%/%%project%%/wiki) |
-[Issue Tracker](https://github.com/%%username%%/%%project%%/issues) |
+[Homepage](https://github.com/gutenye/gutbackup) |
+[Documentation](https://github.com/gutenye/gutbackup/wiki) |
+[Issue Tracker](https://github.com/gutenye/gutbackup/issues) |
 [MIT License](http://choosealicense.com/licenses/mit) |
 [Bountysource](https://www.bountysource.com/teams/gutenye) |
 [by Guten Ye](http://guten.me)
