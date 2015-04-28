@@ -5,12 +5,12 @@
 # Usage: gutbackup backup <profile> [instance] [rsync_options]
 #
 # [OPTIONS]
-#   -d      # directory, default is /gutbackup
+#   -d      # directory, default is /backup
 #
 # Examples:
 #
 #   gutbackup backup hello
-#   gutbackup backup hello data --dry-run
+#   gutbackup backup hello system --dry-run
 #
 
 set -e
@@ -22,7 +22,8 @@ source "$GUTBACKUP_ROOT/libexec/helpers.sh"
 [[ -z "$1" ]] && gutbackup-help --usage backup >&2 && exit 1
 
 # Settings
-dir="/gutbackup"
+host=""
+dir="/backup"
 src="/"
 backup_options="--archive --hard-links --acls --xattrs --compress --verbose --human-readable -P --stats --del --delete-excluded --recursive"
 # --recursive is for --from-file
@@ -36,10 +37,10 @@ main() {
     * ) instance="$1"; shift ;;
   esac
   extra_rsync_options="$@"
-  profile_file="$dir/$profile.conf"                 # hello.conf
-  profile_dir="$dir/$profile"                       # hello/
-  instance_file="$profile_dir/$instance"            # hello/<instance>
-  work_dir="$dir/data/$profile/work"                # data/hello/work
+  profile_file="$dir/conf/$profile.conf"            # /backup/conf/hello.conf
+  profile_dir="$dir/conf/$profile"                  # /backup/conf/hello/
+  instance_file="$profile_dir/$instance"            # /backup/conf/hello/<instance>
+  work_dir="$dir/$profile/work"                     # /backup/hello/work
 
   # source a b
   [[ -e "$profile_file" ]] && source "$profile_file"
@@ -47,12 +48,15 @@ main() {
   source "$instance_file"
 
   # main
+  [[ $check_root == true && $(id -u) -ne 0 ]] && error_exit "gutbackup: you cannot perform this operation unless you are root."
+
   if [[ $(type -t "backup") != "function" ]]; then
     backup() {
       run this
     }
   fi
-  mkdir -p "$work_dir" 2>/dev/null
+
+  mkdir -p "$work_dir"
   cd "$work_dir"
   backup
   cd "$OLDPWD"
@@ -83,7 +87,7 @@ run() {
     echo "$exclude" > $TEMP/exclude.gutbackup
     cmd="$cmd --exclude-from $TEMP/exclude.gutbackup"
   fi
-  cmd="$cmd $backup_options $extra_rsync_options $src/ $dir/data/$profile/$loc_instance/"
+  cmd="$cmd $backup_options $extra_rsync_options $src/ $host$dir/$profile/$loc_instance/"
   say ">> rsync $cmd"
   rsync $cmd
 }

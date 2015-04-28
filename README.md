@@ -1,12 +1,13 @@
 gutbackup, the simplest rsync wrapper for backuping Linux system
 ================================
 
-| MIT | Documentation | 
+| MIT | Documentation |
 
 |                |                                           |
 |----------------|------------------------------------------ |
 | **Install**    |                        |
 | ArchLinux      | `$ pacaur -S gutbackup` |
+| Ubuntu         |  |
 
 
 Getting Started
@@ -18,9 +19,9 @@ Getting Started
 ### I Also Use These Backup Apps
 
 - [Syncthing](https://syncthing.net/): Relatime Backup
-- Android: [Helium](https://play.google.com/store/apps/details?id=com.koushikdutta.backup&hl=en)
-- Windows: [File History](http://windows.microsoft.com/en-us/windows-8/how-use-file-history)
-- Mac OS X: [Time Machine](https://support.apple.com/en-us/HT201250)
+- [Helium](https://play.google.com/store/apps/details?id=com.koushikdutta.backup&hl=en): For Android
+- [File History](http://windows.microsoft.com/en-us/windows-8/how-use-file-history): For Windows
+- [Time Machine](https://support.apple.com/en-us/HT201250): For Mac OS X
 
 Copyright
 ---------
