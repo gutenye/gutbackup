@@ -29,8 +29,8 @@
 ```
 # gutbackup restore archlinux pkg
 # cd /backup/archlinux/work
-# pacman -S `cat pkg.list` -f
-# pacman -S `cat aur.list` -f
+# pacman -S `cat pkg.lst` -f
+# pacman -S `cat aur.lst` -f
 # gutbackup restore archlinux etc
 ```
 

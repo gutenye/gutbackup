@@ -24,7 +24,7 @@ source "$GUTBACKUP_ROOT/libexec/helpers.sh"
 
 main() {
   # handle arguments
-  eval set -- $(getopt -a -o z -l from:,to:,conf: -- "$@")
+  eval set -- $(getopt -a -o z -l from:,to:,conf: -n gutbackup -- "$@")
   while true; do
     case "$1" in
       --from ) o_from=$2; shift 2 ;;
