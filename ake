@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+case "$1" in
+  test )
+    bin/gutbackup backup hello --dir test --dry-run
+  ;;
+esac
