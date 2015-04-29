@@ -14,13 +14,13 @@
 # gpasswd -a $USER root
 ```
 
-### Backup
+### Perform a Backup
 
 ```
 # gutbackup backup archlinux
 ```
 
-### Restore (in a fresh installed ArchLinux)
+### Perform a Restore (in a fresh installed ArchLinux)
 
 1. Install `gutbackup`
 2. Mount backup USB drive to `/backup`
@@ -46,6 +46,6 @@ How it Works
 | Backup     | From                                | To                           |
 |------------|-------------------------------------|------------------------------|
 | pkg        | /var/cache/pacman/pkg               | /backup/archlinux/pkg        |
-| etc        | /etc except /etc/fstab, ...         | /backup/archlinux/etc        |
+| etc        | /etc except machineetc              | /backup/archlinux/etc        |
 | machineetc | /etc/fstab, /etc/default/grub, ...  | /backup/archlinux/machineetc |
 | data       | /home, /root, /var/lib/, ...        | /backup/archlinux/data       |

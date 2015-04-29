@@ -1,0 +1,8 @@
+foo=2
+files="
+/etc
+"
+
+
+
+# vim: ft=sh

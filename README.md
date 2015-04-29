@@ -34,7 +34,7 @@ $ gutbackup backup hello --dir . --dry-run
 
 That's it, as you can see, it just build a rsync command using options from `conf/hello/default` bash file.
 
-Read more at [Archlinux Configuration](https://github.com/gutenye/gutbackup/tree/master/examples/archlinux) or [Documentation](https://github.com/gutenye/gutbackup/wiki)
+Read more at [Archlinux Configuration](https://github.com/gutenye/gutbackup/tree/master/examples/archlinux), [Documentation](https://github.com/gutenye/gutbackup/wiki) and [Server Mode](https://github.com/gutenye/gutbackup/wiki#server-mode)
 
 ### I Also Use These Backup Apps
 
