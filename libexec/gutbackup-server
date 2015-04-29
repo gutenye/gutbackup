@@ -66,4 +66,12 @@ perform_backup() {
   rm "$lock_file"
 }
 
+#####
+# Helpers
+#####
+
+load() {
+  :
+}
+
 main "$@"
