@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Summary: Do a restore action
+# Summary: Perform a restore
 #
 # Usage: gutbackup restore <profile> [instance] [rsync_options]
 #
@@ -14,11 +14,9 @@
 
 set -e
 [[ -n "$GUTBACKUP_DEBUG" ]] && set -x
-
 source "$GUTBACKUP_ROOT/libexec/lib.sh"
 source "$GUTBACKUP_ROOT/libexec/helpers.sh"
-
-[[ -z "$1" ]] && gutbackup-help --usage backup >&2 && exit 1
+[[ -z "$1" ]] && gutbackup-help --usage restore >&2 && exit 1
 
 # Settings
 dir="/backup"

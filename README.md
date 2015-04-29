@@ -18,23 +18,57 @@ Getting Started
 ---------------
 
 ``` bash
-$ mkdir -p /tmp/backup/conf/hello && cd /tmp/backup
-$ vi conf/hello/default
+Mount backup USB drive to /backup
+$ mkdir -p /backup/conf/hello
+$ vi /backup/conf/hello/default
 
-    from="/"
     backup_options="-aP"
     files="
     /etc/fstab
     /etc/mtab
     "
 
-$ gutbackup backup hello --dir . --dry-run
-> rsync --files-from /tmp/files.gutbackup -aP --dry-run / /tmp/backup/hello/
+$ gutbackup backup hello -- --dry-run
+> rsync --files-from /tmp/files.gutbackup -aP --dry-run / /backup/hello/
 ```
 
-That's it, as you can see, it just build a rsync command using options from `conf/hello/default` bash file.
+That's it, as you can see, it just build a rsync command using options from `/backup/conf/hello/default` bash file.
 
-Read more at [Archlinux Configuration](https://github.com/gutenye/gutbackup/tree/master/examples/archlinux), [Server Mode](https://github.com/gutenye/gutbackup/wiki/Server-Mode), [Reference](https://github.com/gutenye/gutbackup/wiki/Reference) and
+**Backup to Remote Server**
+
+```
+$ gutbackup backup hello --to HOST:/backup
+Configuration is located at HOST:/backup/conf
+```
+
+**Configuration**
+
+```
+$ gutbackup backup <profile> [instance] [options] -- [rsync-options]
+$ gutbackup backup hello default -from / -to /backup -conf /backup/conf -- --dry-run
+Default values are instance=default from=/ to=/backup conf=$to/conf
+
+- system: /etc/gutbackup.conf
+- local: $conf/<profile>.conf
+- local: $conf/<profile>/<instance>
+- cmdline
+```
+
+Read more at [Reference](https://github.com/gutenye/gutbackup/wiki/Reference)
+
+
+### Schedule Backup
+
+```
+# sytemctl enable gutbackup@hello.timer
+By default, it runs daily, you can change it by
+# systemctl edit gutbackup@hello.timer
+  [Timer]
+  OnCalendar=weekly
+Read more at $ man systemd.timer
+```
+
+Read more at [Archlinux Configuration](https://github.com/gutenye/gutbackup/tree/master/examples/archlinux), [Server Mode](https://github.com/gutenye/gutbackup/wiki/Server-Mode) and
 [Documentation](https://github.com/gutenye/gutbackup/wiki)
 
 ### I Also Use These Backup Apps

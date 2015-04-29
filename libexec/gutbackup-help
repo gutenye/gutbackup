@@ -12,7 +12,7 @@
 # The remainder of the comment block is displayed as extended
 # documentation.
 
-GUTBACKUP_COMMANDS="backup restore"
+GUTBACKUP_COMMANDS="backup restore server"
 
 set -e
 [[ -n "$GUTBACKUP_DEBUG" ]] && set -x

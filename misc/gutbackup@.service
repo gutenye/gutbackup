@@ -1,0 +1,6 @@
+[Unit]
+Description=GutBackup %i
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/gutbackup backup %i

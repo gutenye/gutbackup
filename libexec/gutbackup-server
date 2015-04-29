@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+#
+# Summary: Server mode
+#
+# Usage: gutbackup server
+
+set -e
+[[ -n "$GUTBACKUP_DEBUG" ]] && set -x
+source "$GUTBACKUP_ROOT/libexec/lib.sh"
+
+duration=86400 # one day
+system_file="/etc/gutbackup.conf"
+stat_dir="/var/lib/gutbackup"
+
+main() {
+  [[ -e "$system_file" ]] && source "$system_file"
+  mkdir -p $stat_dir
+
+  for profile in $profiles; do
+    stat_file="$stat_dir/$profile.stat"
+    lock_file="$stat_dir/$profile.lock"
+    if [[ -e "$lock_file" ]]; then
+      say "gutbackup: skip $profile because of $lock_file"
+      continue
+    fi
+
+    if [[ ! -e "$stat_file" ]]; then
+      perform_backup &
+      continue
+    fi
+
+    last_time=$(cat "$stat_file")
+    now_time=$(date +%s)
+    dur=$(($now_time - $last_time))
+    if (($dur > $duration)); then
+      perform_backup &
+      continue
+    fi
+  done
+}
+
+# perform_backup
+perform_backup() {
+  touch "$lock_file"
+  gutbackup backup $profile
+  echo $(date +%s) > $stat_file
+  rm "$lock_file"
+}
+
+main "$@"

@@ -1,3 +1,10 @@
+# "host:/backup" -> "host"
+# "/backup" -> ""
+parse_host() {
+  [[ "$1" =~ ^(.*):.*$ ]] && echo ${BASH_REMATCH[1]} || echo ""
+}
+
+# echo cmd and run cmd
 run_cmd() {
   cmd="$1"; shift
   echo ">> $cmd $@"

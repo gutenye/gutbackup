@@ -1,43 +1,61 @@
 #!/usr/bin/env bash
 #
-# Summary: Do a backup action
+# Summary: Perform a backup
 #
-# Usage: gutbackup backup <profile> [instance] [rsync_options]
+# Usage: gutbackup backup <profile> [instance] [options] -- [rsync_options]
 #
 # [OPTIONS]
-#   -d      # directory, default is /backup
+#   instance=default
+#   -from=/              # Left side of rsync / /backup/<profile>/<instance>/
+#   -to=/backup          # Right side of rsync / /backup/<profile>/<instance>/
+#   -conf=$to/conf       # Find configuration file at /backup/conf/<profile>/<instance>
 #
 # Examples:
 #
 #   gutbackup backup hello
-#   gutbackup backup hello system --dry-run
+#   gutbackup backup hello system -- --dry-run
 #
 
 set -e
 [[ -n "$GUTBACKUP_DEBUG" ]] && set -x
-
 source "$GUTBACKUP_ROOT/libexec/lib.sh"
 source "$GUTBACKUP_ROOT/libexec/helpers.sh"
-
 [[ -z "$1" ]] && gutbackup-help --usage backup >&2 && exit 1
-
-# settings
-dir="/backup"
 
 main() {
   # handle arguments
-  TEMP="${TEMP:-/tmp}"
-  profile="$1"; shift
-  case "$1" in
-    "" | -* ) instance="default" ;;
-    * ) instance="$1"; shift ;;
-  esac
-  extra_rsync_options="$@"
-  profile_file="$dir/conf/$profile.conf"            # /backup/conf/hello.conf
-  profile_dir="$dir/conf/$profile"                  # /backup/conf/hello/
-  work_dir="$dir/$profile/work"                     # /backup/hello/work
+  set -- $(getopt --alternative --long from:,to:,conf: -- "$@")
+  while true; do
+    case "$1" in
+      --from ) o_from=$2; shift 2 ;;
+      --to ) o_to=$2; shift 2 ;;
+      --conf ) o_conf=$2; shift 2 ;;
+      -- ) shift; break ;;
+      * ) break ;;
+    esac
+  done
 
-  run $instance
+  TEMP="${TEMP:-/tmp}"
+  PROFILE="$1"; shift
+  case "$1" in
+    "" | -* ) INSTANCE="default" ;;
+    * ) INSTANCE="$1"; shift ;;
+  esac
+  EXTRA_RSYNC_OPTIONS="$@"
+
+  # source $SYSTEM_FILE
+  SYSTEM_FILE="/etc/gutbackup.conf"
+  to="/backup"
+  conf=""
+  [[ -e "$SYSTEM_FILE" ]] && source "$SYSTEM_FILE"
+  [[ "$conf" != "" ]] && conf="$to/conf"
+  [[ "$o_to" != "" ]] && conf="$o_to/conf"
+  [[ "$o_conf" != "" ]] && conf="$o_conf"
+  PROFILE_FILE="$conf/$PROFILE.conf"              # /backup/conf/hello.conf
+  PROFILE_DIR="$conf/$PROFILE"                    # /backup/conf/hello/
+
+  # main
+  run $INSTANCE
 }
 
 #####
@@ -45,7 +63,7 @@ main() {
 #####
 
 # run <instance>
-# run inside a subshell, so `source x` has no effect to parent script.
+# it runs inside a subshell, so `source x` has no effect to other scripts.
 run() {
   # `run this` is alias to `invoke_rsync`
   if [[ "$1" == "this" ]]; then
@@ -54,33 +72,32 @@ run() {
   fi
 
   (
-    # settings
+    # handle arguments
+    INSTANCE="$1"
+    INSTANCE_FILE="$PROFILE_DIR/$INSTANCE"          # /backup/conf/hello/etc
+
+    # source $PROFILE_FILE, $INSTANCE_FILE
     unset files exclude
     unset -f backup client_backup
-    check_root=false
-    host=""
-    client_host=""
-    src="/"
+    from="/"
+    to="/backup"
     backup_options="--archive --hard-links --acls --xattrs --compress --verbose --human-readable -P --stats --del --delete-excluded --recursive --super" # --recursive is for --from-file
-
-    # handle arguments
-    instance="$1"
-    instance_file="$profile_dir/$instance"            # /backup/conf/hello/<instance>
-
-    # source a
-    [[ -e "$profile_file" ]] && source "$profile_file"
-    [[ ! -e "$instance_file" ]] && error_exit "gutbackup: instance file does not exists -- $instance_file"
-    source "$instance_file"
-    [[ "$host" != "" ]] && host_with_colon="$host:" || host_with_colon=""
-    [[ "$client_host" != "" ]] && client_host_with_colon="$client_host:" || client_host_with_colon=""
+    check_root=false
+    [[ -e "$PROFILE_FILE" ]] && source "$PROFILE_FILE"
+    [[ ! -e "$INSTANCE_FILE" ]] && error_exit "gutbackup: instance file does not exists -- $INSTANCE_FILE"
+    source "$INSTANCE_FILE"
+    [[ "$o_from" != "" ]] && from="$o_from"
+    [[ "$o_to" != "" ]] && to="$o_to"
+    WORK_DIR="$to/$PROFILE/work"                  # /backup/hello/work
+    CLIENT_HOST=$(parse_host $from)
 
     # main
     [[ $check_root == true && $(id -u) -ne 0 ]] && error_exit "gutbackup: you cannot perform this operation unless you are root."
 
     if [[ $(type -t "client_backup") == "function" ]]; then
-      [[ "$client_host" == "" ]] && error_exit "gutbackup: you defined \`client_backup\` function, but does not set \`client_host\`"
-      run_cmd scp $instance_file $client_host_with_colon/tmp/client_backup.gutbackup >/dev/null
-      run_cmd ssh $client_host 'mkdir -p /tmp/gutbackup && cd /tmp/gutbackup && source /tmp/client_backup.gutbackup && client_backup'
+      [[ "$CLIENT_HOST" == "" ]] && error_exit "gutbackup: you defined \`client_backup\` function, but \`from\` does not contain a host."
+      run_cmd scp $INSTANCE_FILE $CLIENT_HOST:/tmp/client_backup.gutbackup >/dev/null
+      run_cmd ssh $CLIENT_HOST 'mkdir -p /tmp/gutbackup && cd /tmp/gutbackup && source /tmp/client_backup.gutbackup && client_backup'
     fi
 
     if [[ $(type -t "backup") != "function" ]]; then
@@ -89,8 +106,8 @@ run() {
       }
     fi
 
-    mkdir -p "$work_dir"
-    cd "$work_dir"
+    mkdir -p "$WORK_DIR"
+    cd "$WORK_DIR"
     backup
     cd "$OLDPWD"
   )
@@ -99,13 +116,13 @@ run() {
 invoke_rsync() {
   if [[ "$files" != "" ]]; then
     echo "$files" > $TEMP/files.gutbackup
-    cmd="--files-from $TEMP/files.gutbackup"
+    CMD="--files-from $TEMP/files.gutbackup"
   fi
   if [[ "$exclude" != "" ]]; then
     echo "$exclude" > $TEMP/exclude.gutbackup
-    cmd="$cmd --exclude-from $TEMP/exclude.gutbackup"
+    CMD="$CMD --exclude-from $TEMP/exclude.gutbackup"
   fi
-  run_cmd rsync $cmd $backup_options $extra_rsync_options $client_host_with_colon$src/ $host_with_colon$dir/$profile/$instance/
+  run_cmd rsync $CMD $backup_options $EXTRA_RSYNC_OPTIONS $from/ $to/$PROFILE/$INSTANCE/
 }
 
 main "$@"
