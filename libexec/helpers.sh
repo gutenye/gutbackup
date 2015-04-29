@@ -1,7 +1,7 @@
 # exclude="$(load machineetc)"
 load() {
   local files
-  files=$(source "$profile_dir/$1"; echo "$files")
+  files=$(source "$PROFILE_DIR/$1"; echo "$files")
   echo "$files"
 }
 

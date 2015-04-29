@@ -81,7 +81,7 @@ run() {
     unset -f backup client_backup
     from="/"
     to="/backup"
-    backup_options="--archive --hard-links --acls --xattrs --compress --verbose --human-readable -P --stats --del --delete-excluded --recursive --super" # --recursive is for --from-file
+    backup_options="--archive --hard-links --acls --xattrs -zz --verbose --human-readable -P --stats --del --delete-excluded --recursive --super" # --recursive is for --from-file
     check_root=false
     [[ -e "$PROFILE_FILE" ]] && source "$PROFILE_FILE"
     [[ ! -e "$INSTANCE_FILE" ]] && error_exit "gutbackup: instance file does not exists -- $INSTANCE_FILE"
