@@ -1,0 +1,6 @@
+[Unit]
+Description=GutBackup Server mode
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/gutbackup server
