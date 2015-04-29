@@ -1,0 +1,8 @@
+backup() {
+  run pkg
+  run etc
+  run machineetc
+  run data
+}
+
+# vim: ft=sh

@@ -1,0 +1,14 @@
+files="
+/etc/fstab
+/etc/mtab
+/etc/mkinitcpio.conf
+/etc/mkinitcpio.d/
+/etc/X11/xorg.conf.d/
+/etc/grub.d/
+/etc/default/grub
+/boot/archlinux.nsh
+/boot/efibootmgr.sh
+/boot/grub/grub.cfg
+"
+
+# vim: ft=sh

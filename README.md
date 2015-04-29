@@ -1,4 +1,4 @@
-gutbackup, the simplest rsync wrapper for backuping Linux system
+gutbackup, the simplest rsync wrapper for backup Linux system
 ================================
 
 [Homepage](https://github.com/gutenye/gutbackup) |
@@ -17,22 +17,24 @@ gutbackup, the simplest rsync wrapper for backuping Linux system
 Getting Started
 ---------------
 
-	$ mkdir -p /tmp/backup/conf/hello && cd /tmp/backup
-	$ vi conf/hello/default
+``` bash
+$ mkdir -p /tmp/backup/conf/hello && cd /tmp/backup
+$ vi conf/hello/default
 
-     from="/"
-     to="/tmp/backup/"
-     backup_options="-aP"
-     files="
-     /etc/fstab
-     /etc/mtab
-     "
+    from="/"
+    backup_options="-aP"
+    files="
+    /etc/fstab
+    /etc/mtab
+    "
 
-	$ gutbackup backup hello --dir . --dry-run
-	> rsync --files-from /tmp/files.gutbackup -aP / /tmp/backup/hello/
+$ gutbackup backup hello --dir . --dry-run
+> rsync --files-from /tmp/files.gutbackup -aP --dry-run / /tmp/backup/hello/
+```
 
 That's it, as you can see, it just build a rsync command using options from `conf/hello/default` bash file.
 
+Read more at [Archlinux Configuration](https://github.com/gutenye/gutbackup/tree/master/examples/archlinux) or [Documentation](https://github.com/gutenye/gutbackup/wiki)
 
 ### I Also Use These Backup Apps
 

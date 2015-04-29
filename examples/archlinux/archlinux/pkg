@@ -1,0 +1,20 @@
+files="
+/etc/pacman.conf
+/etc/pacman.d/
+/var/cache/pacman/pkg/
+/tmp/gutbackup/
+"
+
+backup() {
+  pacman -Qqe | grep -vx "$(pacman -Qqm)" > pkg.lst
+  pacman -Qqm > aur.lst
+  run this
+}
+
+#restore() {
+  #run this
+  #repo-add /home/pkg/custom.db.tar.gz /home/pkg/*.pkg.tar.xz
+  #pacman -Sy
+#}
+
+# vim: ft=sh

@@ -1,0 +1,11 @@
+files="
+/etc/
+/usr/lib/network/hooks/
+"
+
+exclude="
+$(load machineetc)
+$(load pkg)
+"
+
+# vim: ft=sh
