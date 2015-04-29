@@ -24,14 +24,14 @@ source "$GUTBACKUP_ROOT/libexec/helpers.sh"
 
 main() {
   # handle arguments
-  set -- $(getopt --alternative --long from:,to:,conf: -- "$@")
+  eval set -- $(getopt -a -o z -l from:,to:,conf: -- "$@")
   while true; do
     case "$1" in
       --from ) o_from=$2; shift 2 ;;
       --to ) o_to=$2; shift 2 ;;
       --conf ) o_conf=$2; shift 2 ;;
       -- ) shift; break ;;
-      * ) break ;;
+      * ) error_exit "unhandled options $@" ;;
     esac
   done
 
@@ -48,7 +48,7 @@ main() {
   to="/backup"
   conf=""
   [[ -e "$SYSTEM_FILE" ]] && source "$SYSTEM_FILE"
-  [[ "$conf" != "" ]] && conf="$to/conf"
+  [[ "$conf" == "" ]] && conf="$to/conf"
   [[ "$o_to" != "" ]] && conf="$o_to/conf"
   [[ "$o_conf" != "" ]] && conf="$o_conf"
   PROFILE_FILE="$conf/$PROFILE.conf"              # /backup/conf/hello.conf

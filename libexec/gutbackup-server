@@ -8,12 +8,15 @@ set -e
 [[ -n "$GUTBACKUP_DEBUG" ]] && set -x
 source "$GUTBACKUP_ROOT/libexec/lib.sh"
 
-duration=86400 # one day
-system_file="/etc/gutbackup.conf"
-stat_dir="/var/lib/gutbackup"
+SYSTEM_FILE="/etc/gutbackup.conf"
 
 main() {
-  [[ -e "$system_file" ]] && source "$system_file"
+  # source $system_file
+  to="/backup"
+  duration=86400 # one day
+  stat_dir="/var/lib/gutbackup"
+  [[ -e "$SYSTEM_FILE" ]] && source "$SYSTEM_FILE"
+  [[ "$conf" == "" ]] && conf="$to/conf"
   mkdir -p $stat_dir
 
   for profile in $profiles; do
@@ -35,14 +38,30 @@ main() {
     if (($dur > $duration)); then
       perform_backup &
       continue
-    fi
+    else
+      say "$profile has $(($duration-$dur)) seconds left"
+    fi 
   done
 }
 
 # perform_backup
 perform_backup() {
+  profile_file="$conf/$profile.conf"
+  instance_file="$conf/$profile/default"
+  [[ -e "$profile_file" ]] && source "$profile_file"
+  [[ ! -e "$instance_file" ]] && error_exit "gutbackup: instance does not exists -- $instance_file"
+  source "$instance_file"
+  host=$(parse_host $from) 
+  [[ "$host" == "" ]] && error_exit "gutbackup: you have not defined \`from\` in any $profile_file, $instane_file"
+  if ! ssh $host echo 1 >/dev/null ; then
+    error_exit "gutbackup: $host is not alive"
+    exit 0
+  fi
+
   touch "$lock_file"
-  gutbackup backup $profile
+  if ! "$GUTBACKUP_ROOT/bin/gutbackup" backup $profile; then
+    :
+  fi
   echo $(date +%s) > $stat_file
   rm "$lock_file"
 }
