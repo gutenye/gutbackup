@@ -79,7 +79,7 @@ run() {
 
     if [[ $(type -t "client_backup") == "function" ]]; then
       [[ "$client_host" == "" ]] && error_exit "gutbackup: you defined \`client_backup\` function, but does not set \`client_host\`"
-      run_cmd scp $instance_file $client_host_with_colon/tmp/client_backup.gutbackup
+      run_cmd scp $instance_file $client_host_with_colon/tmp/client_backup.gutbackup >/dev/null
       run_cmd ssh $client_host 'mkdir -p /tmp/gutbackup && cd /tmp/gutbackup && source /tmp/client_backup.gutbackup && client_backup'
     fi
 

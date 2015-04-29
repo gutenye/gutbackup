@@ -17,16 +17,30 @@ gutbackup, the simplest rsync wrapper for backuping Linux system
 Getting Started
 ---------------
 
-	# ln -s /media/backup /gutbackup
+	$ mkdir -p /tmp/backup/conf/hello && cd /tmp/backup
+	$ vi conf/hello/default
+
+     from="/"
+     to="/tmp/backup/"
+     backup_options="-aP"
+     files="
+     /etc/fstab
+     /etc/mtab
+     "
+
+	$ gutbackup backup hello --dir . --dry-run
+	> rsync --files-from /tmp/files.gutbackup -aP / /tmp/backup/hello/
+
+That's it, as you can see, it just build a rsync command using options from `conf/hello/default` bash file.
 
 
 ### I Also Use These Backup Apps
 
-- x: encyption the backup and send to cloud
+- x: encyption the backup and send it to cloud
 - [Syncthing](https://syncthing.net/): Relatime Backup
+- [Time Machine](https://support.apple.com/en-us/HT201250): For Mac OS
 - [Helium](https://play.google.com/store/apps/details?id=com.koushikdutta.backup&hl=en): For Android
 - [File History](http://windows.microsoft.com/en-us/windows-8/how-use-file-history): For Windows
-- [Time Machine](https://support.apple.com/en-us/HT201250): For Mac OS
 
 Copyright
 ---------
