@@ -28,7 +28,7 @@ main() {
     fi
 
     if [[ ! -e "$stat_file" ]]; then
-      perform_backup &
+      perform_backup
       continue
     fi
 
@@ -36,11 +36,11 @@ main() {
     now_time=$(date +%s)
     dur=$(($now_time - $last_time))
     if (($dur > $duration)); then
-      perform_backup &
+      perform_backup
       continue
     else
       say "$profile has $(($duration-$dur)) seconds left"
-    fi 
+    fi
   done
 }
 
@@ -51,7 +51,7 @@ perform_backup() {
   [[ -e "$profile_file" ]] && source "$profile_file"
   [[ ! -e "$instance_file" ]] && error_exit "gutbackup: instance does not exists -- $instance_file"
   source "$instance_file"
-  host=$(parse_host $from) 
+  host=$(parse_host $from)
   [[ "$host" == "" ]] && error_exit "gutbackup: you have not defined \`from\` in any $profile_file, $instane_file"
   if ! ssh $host echo 1 >/dev/null ; then
     error_exit "gutbackup: $host is not alive"
