@@ -2,7 +2,6 @@ files="
 /etc/pacman.conf
 /etc/pacman.d/
 /var/cache/pacman/pkg/
-/tmp/gutbackup/
 "
 
 backup() {
