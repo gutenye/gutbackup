@@ -90,7 +90,7 @@ run() {
     [[ "$o_to" != "" ]] && to="$o_to"
     FROM_HOST=$(parse_host $from)
     TO_HOST=$(parse_host $to)
-    [[ "$TO_HOST" == "" ]] && WORK_DIR="$to/$PROFILE/work" || WORK_DIR="/tmp/gutenbackup"            # /backup/hello/work
+    [[ "$TO_HOST" == "" ]] && WORK_DIR="$to/$PROFILE/work" || WORK_DIR="/tmp/gutbackup"            # /backup/hello/work
 
     # main
     [[ $check_root == true && $(id -u) -ne 0 ]] && error_exit "gutbackup: you cannot perform this operation unless you are root."
