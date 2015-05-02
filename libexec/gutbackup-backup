@@ -88,16 +88,17 @@ run() {
     source "$INSTANCE_FILE"
     [[ "$o_from" != "" ]] && from="$o_from"
     [[ "$o_to" != "" ]] && to="$o_to"
-    WORK_DIR="$to/$PROFILE/work"                  # /backup/hello/work
-    CLIENT_HOST=$(parse_host $from)
+    FROM_HOST=$(parse_host $from)
+    TO_HOST=$(parse_host $to)
+    [[ "$TO_HOST" == "" ]] && WORK_DIR="$to/$PROFILE/work" || WORK_DIR="/tmp/gutenbackup"            # /backup/hello/work
 
     # main
     [[ $check_root == true && $(id -u) -ne 0 ]] && error_exit "gutbackup: you cannot perform this operation unless you are root."
 
     if [[ $(type -t "client_backup") == "function" ]]; then
-      [[ "$CLIENT_HOST" == "" ]] && error_exit "gutbackup: you defined \`client_backup\` function, but \`from\` does not contain a host."
-      run_cmd scp $INSTANCE_FILE $CLIENT_HOST:/tmp/client_backup.gutbackup >/dev/null
-      run_cmd ssh $CLIENT_HOST 'mkdir -p /tmp/gutbackup && cd /tmp/gutbackup && source /tmp/client_backup.gutbackup && client_backup'
+      [[ "$FROM_HOST" == "" ]] && error_exit "gutbackup: you defined \`client_backup\` function, but \`from\` does not contain a host."
+      run_cmd scp $INSTANCE_FILE $FROM_HOST:/tmp/client_backup.gutbackup >/dev/null
+      run_cmd ssh $FROM_HOST 'mkdir -p /tmp/gutbackup && cd /tmp/gutbackup && source /tmp/client_backup.gutbackup && client_backup'
     fi
 
     if [[ $(type -t "backup") != "function" ]]; then
