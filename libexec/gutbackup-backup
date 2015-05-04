@@ -79,6 +79,7 @@ run() {
     # source $PROFILE_FILE, $INSTANCE_FILE
     unset files exclude
     unset -f backup client_backup
+    work_dir="/tmp/gutbackup"
     from="/"
     to="/backup"
     backup_options="--archive --hard-links --acls --xattrs -zz --verbose --human-readable -P --stats --del --delete-excluded --recursive --super" # --recursive is for --from-file
@@ -90,7 +91,6 @@ run() {
     [[ "$o_to" != "" ]] && to="$o_to"
     FROM_HOST=$(parse_host $from)
     TO_HOST=$(parse_host $to)
-    [[ "$TO_HOST" == "" ]] && WORK_DIR="$to/$PROFILE/work" || WORK_DIR="/tmp/gutbackup"            # /backup/hello/work
 
     # main
     [[ $check_root == true && $(id -u) -ne 0 ]] && error_exit "gutbackup: you cannot perform this operation unless you are root."
@@ -107,8 +107,8 @@ run() {
       }
     fi
 
-    mkdir -p "$WORK_DIR"
-    cd "$WORK_DIR"
+    mkdir -p "$work_dir"
+    cd "$work_dir"
     backup
     cd "$OLDPWD"
   )

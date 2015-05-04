@@ -34,28 +34,59 @@ $ gutbackup backup hello -- --dry-run
 
 That's it, as you can see, it just build a rsync command using options from `/backup/conf/hello/default` bash file.
 
-**Backup to Remote Server**
+**Backup to another location**
 
 ```
-$ gutbackup backup hello --to HOST:/backup
-Configuration is located at HOST:/backup/conf
+$ gutbackup backup hello -to /tmp/backup
+> backup to /tmp/backup
+> read conf from /tmp/backup/conf/hello/default
+```
+
+**Backup to another location with another conf directory**
+
+```
+$ gutbackup backup hello -to /tmp/backup -conf /etc/backup
+> backup to /tmp/backup
+> read conf from /etc/backup/hello/default
 ```
 
 **Configuration**
 
-```
-$ gutbackup backup <profile> [instance] [options] -- [rsync-options]
-$ gutbackup backup hello default -from / -to /backup -conf /backup/conf -- --dry-run
-Default values are instance=default from=/ to=/backup conf=$to/conf
+You can provide options in four locations, later one override the previous. They are just plain bash files.
 
-- system: /etc/gutbackup.conf
-- local: $conf/<profile>.conf
-- local: $conf/<profile>/<instance>
+- system-wide: `/etc/gutbackup.conf`
+- local-wide: `$conf/<profile>.conf`
+- local-wide: `$conf/<profile>/<instance>`
 - cmdline
+
+```
+# edit /etc/gutbackup.conf
+
+  from="/"
+  to="/backup"
+  conf="$to/conf"
+
+# edit /backup/conf/hello.conf
+
+  backup_options="-aP"
+
+# edit /backup/conf/hello/default
+
+  files="/etc/fstab"
+
+# edit /backup/conf/hello/data
+
+  files="/root"
+
+# cmdline
+
+  $ gutbackup backup <profile> [instance] [options] -- [rsync-options]
+  $ gutbackup backup hello     # if you omit the instance, it's "default".
+  $ gutbackup backup hello data -from / -to /backup -conf /backup/conf -- --dry-run
 ```
 
-Read more at [Reference](https://github.com/gutenye/gutbackup/wiki/Reference)
-
+Read more at [Archlinux Example](https://github.com/gutenye/gutbackup/tree/master/examples/archlinux),  and [Tutorial](https://github.com/gutenye/gutbackup/wiki/Tutorial)
+[Documentation](https://github.com/gutenye/gutbackup/wiki)
 
 ### Schedule Backup
 
@@ -67,9 +98,6 @@ By default, it runs daily, you can change it by
   OnCalendar=weekly
 Read more at $ man systemd.timer
 ```
-
-Read more at [Archlinux Configuration](https://github.com/gutenye/gutbackup/tree/master/examples/archlinux), [Server Mode](https://github.com/gutenye/gutbackup/wiki/Server-Mode) and
-[Documentation](https://github.com/gutenye/gutbackup/wiki)
 
 ### I Also Use These Backup Apps
 
