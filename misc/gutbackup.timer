@@ -1,9 +1,0 @@
-[Unit]
-Description=GutBackup Server mode
-After=network.target
-
-[Timer]
-OnCalendar=hourly
-
-[Install]
-WantedBy=default.target
