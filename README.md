@@ -85,7 +85,7 @@ You can provide options in four locations, later one override the previous. They
   $ gutbackup backup hello data -from / -to /backup -conf /backup/conf -- --dry-run
 ```
 
-Read more at [Archlinux Example](https://github.com/gutenye/gutbackup/tree/master/examples/archlinux),  and [Tutorial](https://github.com/gutenye/gutbackup/wiki/Tutorial)
+Read more at [Archlinux Example](https://github.com/gutenye/gutbackup/tree/master/examples/archlinux), [Tutorial](https://github.com/gutenye/gutbackup/wiki/Tutorial), and
 [Documentation](https://github.com/gutenye/gutbackup/wiki)
 
 ### Schedule Backup
