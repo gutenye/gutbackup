@@ -1,14 +1,9 @@
 files="
-/var/lib/
-/var/cache/
 /root/
 /home/
 "
 
 exclude="
-/var/cache/pacman/pkg/
-/var/lib/docker/devmapper
-
 /home/guten/Downloads/
 /home/guten/Dropbox/
 /home/guten/Sync/
