@@ -7,29 +7,29 @@ parse_host() {
 # echo cmd and run cmd
 run_cmd() {
   cmd="$1"; shift
-  echo ">> $cmd $@"
+  echo -e ">> $cmd $@"
   $cmd $@
 }
 
 pd() {
-  echo "$@"
+  echo -e "$@"
 }
 
 say() {
-  echo "$@"
+  echo -e "$@"
 }
 
 error() {
-  echo "$@" >&2
+  echo -e "$@" >&2
 }
 
 error_exit() {
-  echo "$@" >&2
+  echo -e "$@" >&2
   exit 1
 }
 
 debug() {
-  echo "$@"
+  echo -e "$@"
 }
 
 

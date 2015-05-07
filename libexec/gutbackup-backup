@@ -79,7 +79,7 @@ run() {
     # source $PROFILE_FILE, $INSTANCE_FILE
     unset files exclude
     unset -f backup client_backup
-    work_dir="/tmp/gutbackup"
+    work_dir="/tmp/gutbackup.$PROFILE"
     from="/"
     to="/backup"
     backup_options="--archive --hard-links --acls --xattrs -zz --verbose --human-readable -P --stats --del --delete-excluded --recursive --super" # --recursive is for --from-file
@@ -107,6 +107,7 @@ run() {
       }
     fi
 
+    say "\n=========== gutbackup: $PROFILE $INSTANCE ===============\n"
     mkdir -p "$work_dir"
     cd "$work_dir"
     backup
@@ -126,7 +127,7 @@ invoke_rsync() {
   if ! run_cmd rsync $CMD $backup_options $EXTRA_RSYNC_OPTIONS $from/ $to/$PROFILE/$INSTANCE/; then
     error_exit "ERROR: rsync went wrong."
   fi
-  rsync $backup_options $EXTRA_RSYNC_OPTIONS $work_dir/ $to/$PROFILE/$INSTANCE/work/
+  run_cmd rsync -aP $work_dir/ $to/$PROFILE/work/
 }
 
 main "$@"
