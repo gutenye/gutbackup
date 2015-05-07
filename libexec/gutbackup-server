@@ -53,15 +53,11 @@ perform_backup() {
   source "$instance_file"
   host=$(parse_host $from)
   [[ "$host" == "" ]] && error_exit "gutbackup: you have not defined \`from\` in any $profile_file, $instane_file"
-  if ! ssh $host echo 1 >/dev/null ; then
-    error_exit "gutbackup: $host is not alive"
-    exit 0
-  fi
+  [ ! ssh $host echo >/dev/null ] && error_exit "gutbackup: $host is not alive"
 
   touch "$lock_file"
-  if ! "$GUTBACKUP_ROOT/bin/gutbackup" backup $profile; then
-    :
-  fi
+  systemctl start gutbackup@$profile
+  #"$GUTBACKUP_ROOT/bin/gutbackup" backup $profile || true
   echo $(date +%s) > $stat_file
   rm "$lock_file"
 }
