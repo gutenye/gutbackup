@@ -1,7 +1,8 @@
-image: l3iggs/archlinux
+image: gutenye/archlinux-drone
 script:
-  - curl -L https://raw.githubusercontent.com/gutenye/aurup/master/aurup -o ~/aurup
-  - cd misc && ./build.sh aur
-env:
-  - user=GutenYe
-  - pass=A/?Yg\OlVS7W^ooy
+  - echo 1
+
+deploy:
+  bash:
+    script:
+      - echo 2

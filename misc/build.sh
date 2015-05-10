@@ -18,7 +18,7 @@ aur() {
   sed -i "s/pkgver=.*/pkgver=$VERSION/" PKGBUILD
   updpkgsums
   makepkg --source --force
-  aurup *.src.tar.gz network
+  aurupload *.src.tar.gz
   cd -
 }
 
