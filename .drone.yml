@@ -1,6 +1,6 @@
 image: gutenye/archlinux-drone
 script:
-  - echo 1
+  - exit 3
 
 deploy:
   bash:
