@@ -1,7 +1,6 @@
 image: gutenye/archlinux-drone
 script:
-  - echo 1
-  #- [[ $(git show-ref $(git describe --abbrev=0 --tags)) == $(git rev-parse HEAD) ]] || exit 2
+  - [[ $(git show-ref $(git describe --abbrev=0 --tags)) == $(git rev-parse HEAD) ]] || exit 2
 
 deploy:
   bash:
