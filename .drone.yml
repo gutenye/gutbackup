@@ -1,5 +1,6 @@
 image: gutenye/archlinux-drone
 script:
+  - sudo su docker
   - whoami
   - pwd
   - echo 1
