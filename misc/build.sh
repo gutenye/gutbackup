@@ -14,6 +14,7 @@ main() {
 }
 
 aur() {
+  VERSION=$(cat ../VERSION)
   cd aur
   sed -i "s/pkgver=.*/pkgver=$VERSION/" PKGBUILD
   updpkgsums
