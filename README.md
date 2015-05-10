@@ -13,7 +13,6 @@ gutbackup, the simplest rsync wrapper for backup Linux system
 | ArchLinux      | `pacaur -S gutbackup` |
 | Ubuntu         |  ... |
 
-
 Getting Started
 ---------------
 
