@@ -5,3 +5,4 @@ case "$1" in
     bin/gutbackup backup hello --dir test --dry-run
   ;;
 esac
+
