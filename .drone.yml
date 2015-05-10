@@ -1,8 +1,5 @@
 image: gutenye/archlinux-drone
 script:
-  - su docker
-  - whoami
-  - pwd
   - echo 1
   #- [[ $(git show-ref $(git describe --abbrev=0 --tags)) == $(git rev-parse HEAD) ]] || exit 2
 
