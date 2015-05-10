@@ -1,6 +1,6 @@
 image: gutenye/archlinux-drone
 script:
-  - sudo su docker
+  - su docker
   - whoami
   - pwd
   - echo 1
@@ -9,4 +9,5 @@ script:
 deploy:
   bash:
     script:
-      - cd misc && ./build.sh aur
+      - chown docker:docker -R misc/aur
+      - su docker -c 'cd misc && ./build.sh aur'
