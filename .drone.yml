@@ -1,4 +1,4 @@
-image: gutendrone/archlinux
+image: gutenye/archlinux-aur
 script:
   - '[[ $(git show-ref $(git describe --abbrev=0 --tags)) == $(git rev-parse HEAD) ]] || exit 2'
 
