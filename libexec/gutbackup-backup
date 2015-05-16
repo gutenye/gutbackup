@@ -20,9 +20,10 @@ set -e
 [[ -n "$GUTBACKUP_DEBUG" ]] && set -x
 source "$GUTBACKUP_ROOT/libexec/lib.sh"
 source "$GUTBACKUP_ROOT/libexec/helpers.sh"
-[[ -z "$1" ]] && gutbackup-help --usage backup >&2 && exit 1
 
 main() {
+  [[ -z "$1" ]] && gutbackup-help --usage backup >&2 && exit 1
+
   # handle arguments
   eval set -- $(getopt -a -o z -l from:,to:,conf: -n gutbackup -- "$@")
   while true; do

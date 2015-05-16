@@ -16,7 +16,6 @@ set -e
 [[ -n "$GUTBACKUP_DEBUG" ]] && set -x
 source "$GUTBACKUP_ROOT/libexec/lib.sh"
 source "$GUTBACKUP_ROOT/libexec/helpers.sh"
-[[ -z "$1" ]] && gutbackup-help --usage restore >&2 && exit 1
 
 # Settings
 dir="/backup"
@@ -24,6 +23,8 @@ src="/"
 restore_options="--archive --hard-links --acls --xattrs --compress --verbose --human-readable -P --stats"
 
 main() {
+  [[ -z "$1" ]] && gutbackup-help --usage restore >&2 && exit 1
+
   # handle arguments
   profile="$1"; shift
   case "$1" in
