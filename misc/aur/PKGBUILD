@@ -1,7 +1,7 @@
 pkgname="gutbackup"
 pkgver=3.0.1
 pkgrel=1
-pkgdesc="the simplest rsync wrapper for backup Linux system. PKGBUILD file is located at https://github.com/gutenye/aur/tree/master/gutbackup"
+pkgdesc="The simplest rsync wrapper for backup Linux system. PKGBUILD at https://github.com/gutenye/gutbackup/tree/master/misc/aur"
 arch=("any")
 url="https://github.com/gutenye/gutbackup"
 license=("MIT")
