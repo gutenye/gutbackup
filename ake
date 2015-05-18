@@ -1,7 +1,21 @@
 #!/usr/bin/env bash
 
+test() {
+  bin/gutbackup backup hello --dir test --dry-run
+}
+
+package() {
+  prefix="$1"
+  [[ "$prefix" == "" ]] && echo "ERROR: USAGE is ./ake package <prefix>" && exit 1
+  mkdir -p "$prefix/usr/bin"
+  mkdir -p "$prefix/usr/share/gutbackup"
+  mkdir -p "$prefix/usr/lib/systemd/system"
+  cp -r bin libexec "$prefix/usr/share/gutbackup"
+  cp misc/*.{service,timer} "$prefix/usr/lib/systemd/system"
+  ln -s "/usr/share/gutbackup/bin/gutbackup" "$prefix/usr/bin"
+}
+
 case "$1" in
-  test )
-    bin/gutbackup backup hello --dir test --dry-run
-  ;;
+  t | test ) test ;;
+  p | package ) shift; package "$@" ;;
 esac
