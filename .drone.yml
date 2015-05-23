@@ -1,4 +1,4 @@
-image: gutenye/archlinux-aur
+image: gutenye/archlinux-devel-with-guten
 script:
   - '[[ $(git show-ref $(git describe --abbrev=0 --tags)) == $(git rev-parse HEAD) ]] || exit 2'
 
@@ -6,4 +6,4 @@ deploy:
   bash:
     script:
       - chown docker:docker -R misc/aur
-      - su docker -c 'cd misc && ./build.sh aur'
+      - su docker -c 'cd misc/aur && gutaur publish $(cat ../../VERSION)'
