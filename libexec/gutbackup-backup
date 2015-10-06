@@ -21,7 +21,7 @@ set -e
 source "$GUTBACKUP_ROOT/libexec/lib.sh"
 source "$GUTBACKUP_ROOT/libexec/helpers.sh"
 
-main() {
+main() { #{{{1
   [[ -z "$1" ]] && gutbackup-help --usage backup >&2 && exit 1
 
   # handle arguments
@@ -58,6 +58,7 @@ main() {
   # main
   run $INSTANCE
 }
+#}}}1
 
 #####
 # DSL
@@ -65,10 +66,10 @@ main() {
 
 # run <instance>
 # it runs inside a subshell, so `source x` has no effect to other scripts.
-run() {
+run() { #{{{1
   # `run this` is alias to `invoke_rsync`
   if [[ "$1" == "this" ]]; then
-    invoke_rsync
+    _invoke_rsync
     return
   fi
 
@@ -115,8 +116,20 @@ run() {
     cd "$OLDPWD"
   )
 }
+#}}}1
 
-invoke_rsync() {
+# run-database rethinkdb
+run-database() {
+  case "$1" in
+    rethinkdb ) rethinkdb dump -f rethinkdb.tar.gz  ;;
+  esac
+}
+
+######
+# Private Methods
+#######
+
+_invoke_rsync() { #{{{1
   # fix backup the whole disk bug.
   if [[ "$files" == "" ]]; then
     error_exit "[files] can not be empty."
@@ -136,5 +149,8 @@ invoke_rsync() {
   run_cmd rsync -aP $work_dir/ $to/$PROFILE/work/
   rm $TEMP/files.gutbackup $TEMP/exclude.gutbackup 2>/dev/null
 }
+#}}}1
 
 main "$@"
+
+# vim: fdm=marker commentstring=#%s
