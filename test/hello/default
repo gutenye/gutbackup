@@ -1,17 +1,17 @@
-foo=1
 files="
 file
 dir/
 "
-backup_options="-a"
+#backup_options="-a"
 
-client_backup() {
-  echo client_backup
-  echo 1 > /tmp/a
-}
+#client_backup() {
+#  echo client_backup
+#  echo 1 > /tmp/a
+#}
 
 backup() {
-  echo backup
+  database rethinkdb
+  run this
 }
 
 # vim: ft=sh

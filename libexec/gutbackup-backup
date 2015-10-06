@@ -25,12 +25,13 @@ main() { #{{{1
   [[ -z "$1" ]] && gutbackup-help --usage backup >&2 && exit 1
 
   # handle arguments
-  eval set -- $(getopt -a -o z -l from:,to:,conf: -n gutbackup -- "$@")
+  eval set -- $(getopt -a -o z -l from:,to:,conf:,dry-run -n gutbackup -- "$@")
   while true; do
     case "$1" in
       --from ) o_from=$2; shift 2 ;;
       --to ) o_to=$2; shift 2 ;;
       --conf ) o_conf=$2; shift 2 ;;
+      --dry-run ) o_dry_run="--dry-run"; shift 1 ;;
       -- ) shift; break ;;
       * ) error_exit "unhandled options $@" ;;
     esac
@@ -118,12 +119,18 @@ run() { #{{{1
 }
 #}}}1
 
-# run-database rethinkdb
-run-database() {
+# database rethinkdb
+database() { #{{{1
+  echo ">> backup database $1"
+
+  if [[ $o_dry_run == "--dry-run" ]]; then
+    return
+  fi
+
   case "$1" in
-    rethinkdb ) rethinkdb dump -f rethinkdb.tar.gz  ;;
+    rethinkdb ) rm -f rethinkdb.tar.gz; rethinkdb dump -f rethinkdb.tar.gz  ;;
   esac
-}
+} #}}}1
 
 ######
 # Private Methods
@@ -143,11 +150,12 @@ _invoke_rsync() { #{{{1
     echo "$exclude" > $TEMP/exclude.gutbackup
     CMD="$CMD --exclude-from $TEMP/exclude.gutbackup"
   fi
-  if ! run_cmd rsync $CMD $backup_options $EXTRA_RSYNC_OPTIONS $from/ $to/$PROFILE/$INSTANCE/; then
+  echo 1, $o_dry_run
+  if ! run_cmd rsync $CMD $backup_options $o_dry_run $EXTRA_RSYNC_OPTIONS $from/ $to/$PROFILE/$INSTANCE/; then
     error_exit "ERROR: rsync went wrong."
   fi
   run_cmd rsync -aP $work_dir/ $to/$PROFILE/work/
-  rm $TEMP/files.gutbackup $TEMP/exclude.gutbackup 2>/dev/null
+  rm -f $TEMP/files.gutbackup $TEMP/exclude.gutbackup
 }
 #}}}1
 

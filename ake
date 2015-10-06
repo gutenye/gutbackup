@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 test() {
-  bin/gutbackup backup hello --dir test --dry-run
+  mkdir -p /tmp/hello
+  bin/gutbackup backup hello --conf test --dry-run
 }
 
 package() {
