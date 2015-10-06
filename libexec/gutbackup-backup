@@ -117,6 +117,11 @@ run() {
 }
 
 invoke_rsync() {
+  # fix backup the whole disk bug.
+  if [[ "$files" == "" ]]; then
+    error_exit "[files] can not be empty."
+  fi
+
   if [[ "$files" != "" ]]; then
     echo "$files" > $TEMP/files.gutbackup
     CMD="--files-from $TEMP/files.gutbackup"
@@ -129,6 +134,7 @@ invoke_rsync() {
     error_exit "ERROR: rsync went wrong."
   fi
   run_cmd rsync -aP $work_dir/ $to/$PROFILE/work/
+  rm $TEMP/files.gutbackup $TEMP/exclude.gutbackup 2>/dev/null
 }
 
 main "$@"
