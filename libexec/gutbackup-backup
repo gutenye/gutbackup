@@ -120,6 +120,7 @@ run() { #{{{1
 #}}}1
 
 # database rethinkdb
+# database rethinkdb localhost:2915 note
 database() { #{{{1
   echo ">> backup database $1"
 
@@ -128,7 +129,13 @@ database() { #{{{1
   fi
 
   case "$1" in
-    rethinkdb ) rm -f rethinkdb.tar.gz; rethinkdb dump -f rethinkdb.tar.gz  ;;
+    rethinkdb )
+      if [[ "$2" = "" ]]; then
+        rm -f rethinkdb.tar.gz; rethinkdb dump -f rethinkdb.tar.gz
+      else
+        rm -f rethinkdb-${3}.tar.gz; rethinkdb dump -c "$2" -f rethinkdb-${3}.tar.gz
+      fi
+    ;;
   esac
 } #}}}1
 
