@@ -10,8 +10,8 @@ gutbackup, the simplest rsync wrapper for backup Linux system
 
 |                |  Install                                         |
 |----------------|------------------------------------------ |
-| ArchLinux      | `$ pacaur -S gutbackup; # pip install rethinkdb` |
-| Ubuntu         | `...; # pip install rethinkdb` |
+| ArchLinux      | `$ pacaur -S gutbackup` |
+| Manually       | `$ git clone git@github.com/gutenye/gutbackup.git` |
 
 Getting Started
 ---------------
